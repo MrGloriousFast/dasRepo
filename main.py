@@ -3,7 +3,7 @@ import random
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-
+import obj
 
 def main():
 	pygame.display.init()
@@ -12,6 +12,9 @@ def main():
 
 	#fov,aspectratio,znear,zfar
 	gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+
+	#create a cube
+	cube = obj.Cube(1.0,(0,0,0))
 
 	glTranslatef(0.0,0.0, -10)
 
