@@ -8,7 +8,7 @@ from OpenGL.GLU import *
 def main():
 	pygame.display.init()
 	display = (800,600)
-	pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+	screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
 	#fov,aspectratio,znear,zfar
 	gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
@@ -20,7 +20,7 @@ def main():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
-			
+
 			#keybuttons move the view
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
