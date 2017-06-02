@@ -6,7 +6,7 @@ from OpenGL.GLU import *
 
 
 def main():
-	pygame.init()
+	pygame.display.init()
 	display = (800,600)
 	pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
@@ -45,6 +45,6 @@ def main():
 		#glRotatef(1, 3, 1, 1)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		pygame.display.flip()
-		pygame.time.wait(10)
+		pygame.time.wait(100)
 
 main()
