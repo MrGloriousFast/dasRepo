@@ -46,7 +46,7 @@ class Cube:
 
 
 				
-	def render():
+	def render(self):
 
 		#drawing the edges
 		glBegin(GL_LINES)
