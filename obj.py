@@ -1,3 +1,9 @@
+import pygame, math
+import random
+from pygame.locals import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
+
 
 class Cube:
 	def __init__(self,length,pos):
