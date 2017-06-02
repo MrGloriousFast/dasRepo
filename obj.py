@@ -50,10 +50,10 @@ class Cube:
 
 		#drawing the edges
 		glBegin(GL_LINES)
-		glColor3fv((0,0,0))
+		glColor3fv((1,1,1))
 		for edge in self.edges:
 			for vertex in self.vertices:
-				glVertex3fv(vertices[vertex])
+				glVertex3fv(self.vertices[vertex])
 		glEnd()
 		
 		
