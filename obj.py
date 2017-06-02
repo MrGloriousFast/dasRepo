@@ -16,7 +16,7 @@ class Cube:
 						(pos[0]+self.length , pos[1]+self.length, pos[2]),
 						(pos[0] , pos[1]+self.length, pos[2]),
 						
-						(pos[0] , pos[1], pos[2]+self.length)
+						(pos[0] , pos[1], pos[2]+self.length),
 						(pos[0]+self.length , pos[1], pos[2]+self.length),
 						(pos[0]+self.length , pos[1]+self.length, pos[2]+self.length),
 						(pos[0] , pos[1]+self.length, pos[2]+self.length))
