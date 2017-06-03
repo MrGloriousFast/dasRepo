@@ -18,8 +18,12 @@ def main():
     #Create the camera
     cam = camera.Camera(45, (display[0]/display[1]), 0.1, 50.0)
 
-    #create a cube
-    cube = obj.Cube(1.0,(0,0,0))
+    #create some cubes
+    objs = []
+    for x in range(0,10,2):
+        for y in range(0,10,2):
+            for z in range(0,10,2):
+                objs.append(obj.Cube(1.0,(x,y,z)))
 
     #create particle objects
     p1 = Particle([0,0,0], [0,0,0], [0,0,0])
@@ -58,7 +62,8 @@ def main():
 
         #glRotatef(1, 3, 1, 1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        cube.render()
+        for o in objs:
+            o.render()
         pe.update()
         p1.update()
         p1.render()
