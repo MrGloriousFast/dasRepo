@@ -17,25 +17,12 @@ def main():
     deltaT = int(1000/FPS)#just a good guess for the first loop
     screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
-    #Create the camera
-    cam = camera.Camera(45, (display[0]/display[1]), 0.1, 50.0)
-
-    #create some cubes
-    objs = []
-    for x in range(0,10,2):
-        for y in range(0,10,2):
-            for z in range(0,10,2):
-                objs.append(obj.Cube(1.0,(x,y,z)))
-
-    #create particle objects
-    pe = ParticleEmitter([1.0,1.0,1.0], Particle, 30, [0,0,1], 2)
-    glTranslatef(0.0,0.0, -10)
-    emitters = []
-
     #triangle in vertices
-    triangle = numpy.array([-0.5, -0.5 , 0.0,
-                0.5, -0.5 , 0.0,
-                0.0, 0.5 , 0.0], dtype='float32')
+    triangle = numpy.array(
+            [-0.5, -0.5 , 0.0,
+            0.5, -0.5 , 0.0,
+            0.0, 0.5 , 0.0], 
+            dtype='float32')
        
     #vertex shader
     #makes a shape out of vertices
@@ -84,44 +71,13 @@ def main():
     glUseProgram(shader)
     
     while True:
-        #start measuring how long this loop took
+        #start measuring how long this loop will take
         start = time.time()
 
-        #keyboard down presses
-        pressed = pygame.key.get_pressed()
+        #all keyboard and mouse stuff goes there
+        userInput()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 4:
-                    glTranslatef(0,0,0.1)
-                if event.button == 5:
-                    glTranslatef(0,0,-0.1)
-
-        #mouse turning
-        mouseRel = (x,y)
-        mouseRel = pygame.mouse.get_rel()
-
-        #glRotatef(angle,x,y,z)
-        turnspeed = 5
-        glRotatef(5,mouseRel[0], mouseRel[1], 0)
-
-        if pressed[pygame.K_w]:
-            cam.moveForward()
-
-        if pressed[pygame.K_a]:
-            cam.moveLeft()
-
-        if pressed[pygame.K_s]:
-            cam.moveBackward()
-
-        if pressed[pygame.K_d]:
-            cam.moveRight()
-
-        #glRotatef(1, 3, 1, 1)
+        #make the screen blank
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
              
         #draw!!!!
@@ -136,6 +92,37 @@ def main():
         if(waittime > 0):
             pygame.time.wait(waittime)
         else:
-               #always wait at least one millisec
+            #always wait at least one millisec
             pygame.time.wait(1)
+
+def userInput():
+    #keyboard down presses
+    pressed = pygame.key.get_pressed()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+
+    #mouse turning
+    #mouseRel = (x,y)
+    mouseRel = pygame.mouse.get_rel()
+
+    #glRotatef(angle,x,y,z)
+    turnspeed = 5
+    glRotatef(5,mouseRel[0], mouseRel[1], 0)
+
+    if pressed[pygame.K_w]:
+        cam.moveForward()
+
+    if pressed[pygame.K_a]:
+        cam.moveLeft()
+
+    if pressed[pygame.K_s]:
+        cam.moveBackward()
+
+    if pressed[pygame.K_d]:
+        cam.moveRight()
+
+#start the main
 main()
