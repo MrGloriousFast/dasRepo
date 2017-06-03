@@ -6,6 +6,7 @@ from OpenGL.GLU import *
 import obj
 from ParticleEmitter import *
 from Particle import *
+import camera
 
 def main():
         pygame.display.init()
@@ -14,6 +15,9 @@ def main():
 
         #fov,aspectratio,znear,zfar
         gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+
+        #Create the camera
+        cam = camera.Camera(45, (display[0]/display[1]), 0.1, 50.0)
 
         #create a cube
         cube = obj.Cube(1.0,(0,0,0))
@@ -33,20 +37,6 @@ def main():
                                 pygame.quit()
                                 quit()
 
-                        #keybuttons move the view
-                        if event.type == pygame.KEYDOWN:
-                                if event.key == pygame.K_LEFT:
-                                        glTranslatef(-0.1,0,0)
-
-                                if event.key == pygame.K_RIGHT:
-                                        glTranslatef(0.1,0,0)
-
-                                if event.key == pygame.K_UP:
-                                        glTranslatef(0,0.1,0)
-
-                                if event.key == pygame.K_DOWN:
-                                        glTranslatef(0,-0.1,0)
-
                         if event.type == pygame.MOUSEBUTTONDOWN:
                                 if event.button == 4:
                                         glTranslatef(0,0,0.1)
@@ -54,17 +44,17 @@ def main():
                                         glTranslatef(0,0,-0.1)
 
 
-                if pressed[pygame.K_a]:
-                        glTranslatef(-0.1,0,0)
+                        if pressed[pygame.K_a]:
+                            cam.moveLEFT()
 
-                if pressed[pygame.K_d]:
-                        glTranslatef(0.1,0,0)
+                        if pressed[pygame.K_d]:
+                            cam.moveRIGHT()
 
-                if pressed[pygame.K_w]:
-                        glTranslatef(0,0.1,0)
+                        if pressed[pygame.K_w]:
+                            cam.moveUP()
 
-                if pressed[pygame.K_s]:
-                        glTranslatef(0,-0.1,0)
+                        if pressed[pygame.K_s]:
+                            cam.moveDOWN()
 
                 #glRotatef(1, 3, 1, 1)
                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
