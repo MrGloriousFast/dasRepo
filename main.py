@@ -48,17 +48,25 @@ def main():
                 if event.button == 5:
                     glTranslatef(0,0,-0.1)
 
+        #mouse turning
+        mouseRel = (x,y)
+        mouseRel = pygame.mouse.get_rel()
+        print(mouseRel)
+        #glRotatef(angle,x,y,z);
+        turnspeed = 5
+        glRotatef(5,mouseRel[0], mouseRel[1], 0)
+
         if pressed[pygame.K_a]:
-            cam.moveLEFT()
+            cam.moveLeft()
 
         if pressed[pygame.K_d]:
-            cam.moveRIGHT()
+            cam.moveRight()
 
         if pressed[pygame.K_w]:
-            cam.moveUP()
+            cam.moveUp()
 
         if pressed[pygame.K_s]:
-            cam.moveDOWN()
+            cam.moveDown()
 
         #glRotatef(1, 3, 1, 1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
