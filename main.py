@@ -4,14 +4,15 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import obj
+import camera
 
 def main():
 	pygame.display.init()
 	display = (800,600)
 	pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
-	#fov,aspectratio,znear,zfar
-	gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+	#Create the camera
+	cam = camera.Camera(45, (display[0]/display[1]), 0.1, 50.0)
 
 	#create a cube
 	cube = obj.Cube(1.0,(0,0,0))
@@ -36,16 +37,18 @@ def main():
 
 		
 		if pressed[pygame.K_a]:
-			glTranslatef(-0.1,0,0)
+			cam.moveLEFT()
 
 		if pressed[pygame.K_d]:
-			glTranslatef(0.1,0,0)
+			cam.moveRIGHT
 			
 		if pressed[pygame.K_w]:
-			glTranslatef(0,0.1,0)
+			cam.moveUP
 
 		if pressed[pygame.K_s]:
-			glTranslatef(0,-0.1,0)
+			cam.moveDOWN
+			
+				
 
 		#glRotatef(1, 3, 1, 1)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
