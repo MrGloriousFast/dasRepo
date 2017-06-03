@@ -19,5 +19,3 @@ class Particle:
         glVertex3f(*self.pos)
         glEnd();
 
-        #  glVertex2v(*self.pos)
-
