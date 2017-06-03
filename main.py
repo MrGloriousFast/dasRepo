@@ -10,7 +10,9 @@ import camera
 
 def main():
     pygame.display.init()
-    display = (800,600)
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
+    display = (SCREEN_WIDTH,SCREEN_HEIGHT)
     FPS = 60
     deltaT = int(1000/FPS)#just a good guess for the first loop
     screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
@@ -52,21 +54,21 @@ def main():
         mouseRel = (x,y)
         mouseRel = pygame.mouse.get_rel()
 
-        #glRotatef(angle,x,y,z);
+        #glRotatef(angle,x,y,z)
         turnspeed = 5
         glRotatef(5,mouseRel[0], mouseRel[1], 0)
+
+        if pressed[pygame.K_w]:
+            cam.moveForward()
 
         if pressed[pygame.K_a]:
             cam.moveLeft()
 
+        if pressed[pygame.K_s]:
+            cam.moveBackward()
+
         if pressed[pygame.K_d]:
             cam.moveRight()
-
-        if pressed[pygame.K_w]:
-            cam.moveUp()
-
-        if pressed[pygame.K_s]:
-            cam.moveDown()
 
         #glRotatef(1, 3, 1, 1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
@@ -75,11 +77,12 @@ def main():
             e.update()
         for o in objs:
             o.render()
-        pe.update()
-        pygame.display.flip()
-
+        pe.update()       
+        
+        
         
         #FPS and deltaT calculation
+        pygame.display.flip()
         end = time.time()
         deltaT = end - start
         waittime = int(1000/FPS - deltaT)
