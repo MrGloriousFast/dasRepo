@@ -51,7 +51,7 @@ def main():
         #mouse turning
         mouseRel = (x,y)
         mouseRel = pygame.mouse.get_rel()
-        print(mouseRel)
+
         #glRotatef(angle,x,y,z);
         turnspeed = 5
         glRotatef(5,mouseRel[0], mouseRel[1], 0)
@@ -83,6 +83,8 @@ def main():
         end = time.time()
         deltaT = end - start
         waittime = int(1000/FPS - deltaT)
-        pygame.time.wait(waittime)
-
+        if(waittime > 0):
+            pygame.time.wait(waittime)
+        else:
+            pygame.time.wait(1)
 main()
