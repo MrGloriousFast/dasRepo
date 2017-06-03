@@ -24,8 +24,8 @@ class Camera:
     def moveDown(self):
         glTranslatef(0,-0.1,0)
         
-    def moveFoward(self):
+    def moveForward(self):
         glTranslatef(0,0,0.1)
     
-    def moveBack(self):
+    def moveBackward(self):
         glTranslatef(0,0,-0.1)
