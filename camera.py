@@ -12,14 +12,20 @@ class Camera:
         self.dir = direction
         gluPerspective(fov, aspectratio, znear, zfar)
         
-    def moveUP(self):
+    def moveUp(self):
         glTranslatef(0,0.1,0)
     
-    def moveLEFT(self):
+    def moveLeft(self):
         glTranslatef(-0.1,0,0)
     
-    def moveRIGHT(self):
+    def moveRight(self):
         glTranslatef(0.1,0,0)
     
-    def moveDOWN(self):
+    def moveDown(self):
         glTranslatef(0,-0.1,0)
+        
+    def moveFoward(self):
+        glTranslatef(0,0,0.1)
+    
+    def moveBack(self):
+        glTranslatef(0,0,-0.1)
