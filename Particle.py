@@ -11,7 +11,7 @@ class Particle(Physical):
         self.tdelta = 0.08
 
     def update(self):
-        self.speed[2] -= self.tdelta * 9.81
+        self.speed[2] -= self.tdelta * 0.5
         self.pos[0] += self.speed[0] * self.tdelta
         self.pos[1] += self.speed[1] * self.tdelta
         self.pos[2] += self.speed[2] * self.tdelta
