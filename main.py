@@ -16,8 +16,8 @@ def main():
     deltaT = int(1000/FPS)#just a good guess for the first loop
     screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
-    #triangle in vertices
-    triangle = obj.Triangle()
+    #cube
+    cube = obj.Cube()
     
     while True:
         #start measuring how long this loop will take
@@ -29,8 +29,11 @@ def main():
         #make the screen blank
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
              
+        #turn the cube
+        cube.update(time.time())
+        
         #draw!!!!
-        triangle.render()        
+        cube.render()        
         
         #FPS and deltaT calculation
         pygame.display.flip()
@@ -42,6 +45,7 @@ def main():
         else:
             #always wait at least one millisec
             pygame.time.wait(1)
+   
 
 def userInput():
     #keyboard down presses
