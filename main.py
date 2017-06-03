@@ -1,12 +1,12 @@
-import pygame,math
+import pygame,math, numpy
 import random, time
 from pygame.locals import *
 from OpenGL.GL import *
+from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
-import obj
+import obj, camera
 from ParticleEmitter import *
 from Particle import *
-import camera
 
 def main():
     pygame.display.init()
@@ -32,6 +32,57 @@ def main():
     glTranslatef(0.0,0.0, -10)
     emitters = []
 
+    #triangle in vertices
+    triangle = numpy.array([-0.5, -0.5 , 0.0,
+                0.5, -0.5 , 0.0,
+                0.0, 0.5 , 0.0], dtype='float32')
+       
+    #vertex shader
+    #makes a shape out of vertices
+    #is a string so we can give this definition to opengl         
+    vertex_shader = """
+    #version 330
+    in vec4 position;
+    
+    void main(){
+        gl_Position = position;
+    }
+    """
+    
+    #fragment shader colors
+    #makes color and pixels out of shapes
+    fragment_shader = """
+    #version 330
+    
+    void main(){
+        //r,g,b,alpha
+        gl_FragColor = vec4(1.0f,0.0f,0.0f,1.0f);
+    }
+    """
+    
+    #one shader takes one vertex shader and one fragment shader
+    shader = OpenGL.GL.shaders.compileProgram(
+        OpenGL.GL.shaders.compileShader(vertex_shader,GL_VERTEX_SHADER),
+        OpenGL.GL.shaders.compileShader(fragment_shader,GL_FRAGMENT_SHADER)
+    )
+    
+    #vertix buffer object
+    VBO = glGenBuffers(1) #each buffer has a number, we choose the 1
+    glBindBuffer(GL_ARRAY_BUFFER, VBO) #openGl uses our buffer now
+    #what kind of buffer, bytes, vertices, drawType
+    #drawTypes: 
+    #   GL_STATIC_DRAW , vertex does not change. uploaded once
+    #   GL_DYNAMIC_DRAW ,vertex does change rarely (often drawn before change)
+    #   GL_STREAM_DRAW , vertex changes with each draw
+    glBufferData(GL_ARRAY_BUFFER, 36, triangle, GL_STATIC_DRAW)
+
+    position = glGetAttribLocation(shader, "position")
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0, None)
+    glEnableVertexAttribArray(position)
+    
+    #use the program!
+    glUseProgram(shader)
+    
     while True:
         #start measuring how long this loop took
         start = time.time()
@@ -72,13 +123,9 @@ def main():
 
         #glRotatef(1, 3, 1, 1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        emitters.append(ParticleEmitter([1.0,1.0,1.0], Particle, 30, [0,0,1], 2))
-        for e in emitters:
-            e.update()
-        for o in objs:
-            o.render()
-        pe.update()       
-        
+             
+        #draw!!!!
+        glDrawArrays(GL_TRIANGLES, 0, 3)
         
         
         #FPS and deltaT calculation
@@ -89,5 +136,6 @@ def main():
         if(waittime > 0):
             pygame.time.wait(waittime)
         else:
+               #always wait at least one millisec
             pygame.time.wait(1)
 main()
