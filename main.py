@@ -1,5 +1,4 @@
-import pygame,math, numpy
-import random, time
+import pygame,math, numpy, random, time
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GL.shaders import *

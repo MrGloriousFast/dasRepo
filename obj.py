@@ -16,7 +16,7 @@ class Triangle:
         #vertex shader
         #makes a shape out of vertices
         #is a string so we can give this definition to opengl
-        #this is openGL language!       
+        #this is openGL language!  C-style language called GLSL (OpenGL Shading Language).     
         vertex_shader = """
         #version 330
         in vec4 position;
@@ -31,9 +31,11 @@ class Triangle:
         fragment_shader = """
         #version 330
         
+        out vec4 outColor;
+        
         void main(){
             //r,g,b,alpha
-            gl_FragColor = vec4(1.0f,0.0f,0.0f,0.5f);
+            outColor = vec4(1.0f,0.0f,0.0f,0.5f);
         }
         """
         
