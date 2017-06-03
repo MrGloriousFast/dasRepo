@@ -51,7 +51,6 @@ def main():
         #mouse turning
         mouseRel = (x,y)
         mouseRel = pygame.mouse.get_rel()
-        print(mouseRel)
         #glRotatef(angle,x,y,z);
         turnspeed = 5
         glRotatef(5,mouseRel[0], mouseRel[1], 0)

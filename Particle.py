@@ -1,7 +1,9 @@
 from copy import deepcopy
 from OpenGL.GL import *
 from OpenGL.GLU import *
-class Particle:
+from Physical import Physical
+
+class Particle(Physical):
     def __init__(self, pos, speed, direction, die_after):
         self.pos = deepcopy(pos)
         self.speed = deepcopy(speed)
