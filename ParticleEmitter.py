@@ -9,6 +9,7 @@ class ParticleEmitter:
     def update(self):
         for p in self.particles:
             p.update()
+            p.render()
 
 #  def render(self):
         #  self.t += 1
