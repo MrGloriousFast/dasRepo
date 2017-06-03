@@ -1,5 +1,5 @@
 import pygame,math
-import random
+import random, time
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -11,10 +11,9 @@ import camera
 def main():
     pygame.display.init()
     display = (800,600)
+    FPS = 60
+    deltaT = int(1000/FPS)#just a good guess for the first loop
     screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
-
-    #fov,aspectratio,znear,zfar
-    #gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
 
     #Create the camera
     cam = camera.Camera(45, (display[0]/display[1]), 0.1, 50.0)
@@ -22,13 +21,14 @@ def main():
     #create a cube
     cube = obj.Cube(1.0,(0,0,0))
 
-
     #create particle objects
     p1 = Particle([0,0,0], [0,0,0], [0,0,0])
     pe = ParticleEmitter([1.0,1.0,1.0], Particle, 20, lambda: [random.randint(0,1), random.randint(0,1), random.randint(0,1)], lambda: [random.randint(0,1), random.randint(0,1), random.randint(0,1)])
     glTranslatef(0.0,0.0, -10)
 
     while True:
+        #start measuring how long this loop took
+        start = time.time()
 
         #keyboard down presses
         pressed = pygame.key.get_pressed()
@@ -63,6 +63,11 @@ def main():
         p1.update()
         p1.render()
         pygame.display.flip()
-        pygame.time.wait(10)
+        
+        #FPS and deltaT calculation
+        end = time.time()
+        deltaT = end - start
+        waittime = int(1000/FPS - deltaT)
+        pygame.time.wait(waittime)
 
 main()
