@@ -40,13 +40,13 @@ def main():
 			cam.moveLEFT()
 
 		if pressed[pygame.K_d]:
-			cam.moveRIGHT
+			cam.moveRIGHT()
 			
 		if pressed[pygame.K_w]:
-			cam.moveUP
+			cam.moveUP()
 
 		if pressed[pygame.K_s]:
-			cam.moveDOWN
+			cam.moveDOWN()
 			
 				
 
