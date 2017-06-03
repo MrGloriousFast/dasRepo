@@ -5,7 +5,7 @@ class Particle:
         self.pos = pos
         self.speed = speed
         self.direction = direction
-        self.tdelta = 0
+        self.tdelta = 0.001
 
     def update(self):
         self.speed[2] -= self.tdelta * self.speed[2]
@@ -18,7 +18,6 @@ class Particle:
         glBegin(GL_POINTS)
         glVertex3f(*self.pos)
         glEnd();
-        print('yo')
 
         #  glVertex2v(*self.pos)
 
