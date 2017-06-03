@@ -1,11 +1,12 @@
+from copy import deepcopy
 from OpenGL.GL import *
 from OpenGL.GLU import *
 class Particle:
-    def __init__(self, pos, speed, direction):
-        self.pos = pos
-        self.speed = speed
-        self.direction = direction
-        self.tdelta = 0.001
+    def __init__(self, pos, speed, direction, die_after):
+        self.pos = deepcopy(pos)
+        self.speed = deepcopy(speed)
+        self.direction = deepcopy(direction)
+        self.tdelta = 0.08
 
     def update(self):
         self.speed[2] -= self.tdelta * 9.81

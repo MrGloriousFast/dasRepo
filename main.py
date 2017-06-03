@@ -26,8 +26,9 @@ def main():
                 objs.append(obj.Cube(1.0,(x,y,z)))
 
     #create particle objects
-    pe = ParticleEmitter([1.0,1.0,1.0], Particle, 20, [0,0,1], 2)
+    pe = ParticleEmitter([1.0,1.0,1.0], Particle, 30, [0,0,1], 2)
     glTranslatef(0.0,0.0, -10)
+    emitters = []
 
     while True:
         #start measuring how long this loop took
@@ -61,10 +62,14 @@ def main():
 
         #glRotatef(1, 3, 1, 1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+        emitters.append(ParticleEmitter([1.0,1.0,1.0], Particle, 30, [0,0,1], 2))
+        for e in emitters:
+            e.update()
         for o in objs:
             o.render()
         pe.update()
         pygame.display.flip()
+
         
         #FPS and deltaT calculation
         end = time.time()
