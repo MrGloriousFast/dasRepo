@@ -24,8 +24,8 @@ def main():
 
 
         #create particle objects
-        p1 = Particle([0,0,0], [0,0,0], [0,0,0])
-        pe = ParticleEmitter([1.0,1.0,1.0], Particle, 20, lambda: [random.randint(0,1), random.randint(0,1), random.randint(0,1)], lambda: [random.randint(0,1), random.randint(0,1), random.randint(0,1)])
+        #  p1 = Particle([0,0,0], [0,0,0], [0,0,0])
+        pe = ParticleEmitter([1.0,1.0,1.0], Particle, 20, [0,0,1], 2)
         glTranslatef(0.0,0.0, -10)
 
         while True:
@@ -60,8 +60,8 @@ def main():
                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
                 cube.render()
                 pe.update()
-                p1.update()
-                p1.render()
+                #  p1.update()
+                #  p1.render()
                 pygame.display.flip()
                 pygame.time.wait(10)
 
