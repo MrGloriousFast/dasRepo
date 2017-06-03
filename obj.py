@@ -66,7 +66,7 @@ class Triangle:
         #positions attribut
         posAttrib = glGetAttribLocation(shader, "position")
         glEnableVertexAttribArray(posAttrib)
-        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*4,ctypes.c_void_p(0))
+        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*4,ctypes.c_void_p(0)) # (.. , abstand, offset {normale int aber als ctype})
         
         #farben attribut
         colAttrib = glGetAttribLocation(shader, "color")

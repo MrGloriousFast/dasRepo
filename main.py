@@ -58,19 +58,11 @@ def userInput():
 
     #glRotatef(angle,x,y,z)
     turnspeed = 5
-    glRotatef(5,mouseRel[0], mouseRel[1], 0)
+    #glRotatef(5,mouseRel[0], mouseRel[1], 0)
 
-    if pressed[pygame.K_w]:
-        cam.moveForward()
+    #if pressed[pygame.K_w]:
+        #cam.moveForward()
 
-    if pressed[pygame.K_a]:
-        cam.moveLeft()
-
-    if pressed[pygame.K_s]:
-        cam.moveBackward()
-
-    if pressed[pygame.K_d]:
-        cam.moveRight()
 
 #start the main
 main()
