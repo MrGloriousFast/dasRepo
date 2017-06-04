@@ -184,15 +184,15 @@ class Cube:
         #the quad as a numpy array of vertices
         #X, Y, Z, R, G, B
         self.vertices = numpy.array(
-             [0.0,  0.0 ,  0.0,     1.0 , 0.0 , 0.0,
-              0.5,  0.0 ,  0.0,     0.0 , 1.0 , 0.0,
-              0.5,  0.5 ,  0.0,     0.0 , 0.0 , 1.0,
-              0.0,  0.5 ,  0.0,     1.0 , 0.0 , 0.0,
+             [-0.5, -0.5 ,  -0.5,   1.0 , 0.0 , 0.0,
+               0.5, -0.5 ,  -0.5,   0.0 , 1.0 , 0.0,
+               0.5,  0.5 ,  -0.5,   0.0 , 0.0 , 1.0,
+              -0.5,  0.5 ,  -0.5,   1.0 , 0.0 , 0.0,
               
-              0.0,  0.0 ,  0.5,     1.0 , 0.0 , 0.0,
-              0.5,  0.0 ,  0.5,     0.0 , 1.0 , 0.0,
-              0.5,  0.5 ,  0.5,     0.0 , 0.0 , 1.0,
-              0.0,  0.5 ,  0.5,     1.0 , 0.0 , 0.0]
+              -0.5, -0.5 ,  0.5,    1.0 , 0.0 , 0.0,
+               0.5, -0.5 ,  0.5,    0.0 , 1.0 , 0.0,
+               0.5,  0.5 ,  0.5,    0.0 , 0.0 , 1.0,
+              -0.5,  0.5 ,  0.5,    1.0 , 0.0 , 0.0]
              ,dtype='float32')
             
         #we indicate which vertex we mean to make a triangle
@@ -290,6 +290,31 @@ class Cube:
     
     def update(self, deltaT):
 
-        rotx = pyrr.Matrix44.from_x_rotation(numpy.pi * deltaT)
+        speedTurn = 0.1
+
+        rotx = pyrr.Matrix44.from_x_rotation(numpy.pi * deltaT* speedTurn)
+        roty = pyrr.Matrix44.from_y_rotation(numpy.pi * deltaT*speedTurn)
+        
+        
         transformLoc = glGetUniformLocation(self.shader, "transform")
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, rotx)
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, rotx * roty)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

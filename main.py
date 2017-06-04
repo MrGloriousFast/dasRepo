@@ -19,6 +19,12 @@ def main():
     #cube
     cube = obj.Cube()
     
+    #make it not buggy
+    glEnable(GL_DEPTH_TEST)
+    
+    #wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+    
     while True:
         #start measuring how long this loop will take
         start = time.time()
