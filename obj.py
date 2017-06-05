@@ -3,6 +3,7 @@ import random, pyrr
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from PIL import Image
 
 class Triangle:
     def __init__(self):
@@ -91,10 +92,10 @@ class Quad:
         #the quad as a numpy array of vertices
         #X, Y, Z, R, G, B
         self.vertices = numpy.array(
-            [-0.5, -0.5 ,  0.0,     1.0 , 0.0 , 0.0,    0.0, 0.0,
-              0.0, -0.5 ,  0.0,     0.0 , 1.0 , 0.0,    1.0, 0.0,
-              0.0,  0.5 ,  0.0,     0.0 , 0.0 , 1.0,    1.0, 1.0,
-             -0.5,  0.5 ,  0.0,     0.0 , 0.0 , 1.0,    0.0, 1.0],
+            [-1.0, -1.0 ,  0.0,     1.0 , 0.0 , 0.0,    0.0, 1.0,
+              0.0, -1.0 ,  0.0,     0.0 , 1.0 , 0.0,    1.0, 1.0,
+              0.0,  1.0 ,  0.0,     0.0 , 0.0 , 1.0,    1.0, 0.0,
+             -1.0,  1.0 ,  0.0,     0.0 , 0.0 , 1.0,    0.0, 0.0],
             dtype='float32')
             
         #we indicate which vertex we mean
@@ -114,8 +115,9 @@ class Quad:
         out vec2 outTexCord;
                 
         void main(){
-            outTexCord = inTexCord;
             gl_Position = vec4(position, 1.0f);
+            outTexCord = inTexCord;
+
         }
         """
         
@@ -139,7 +141,8 @@ class Quad:
         #one shader takes one vertex shader and one fragment shader
         shader = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader,GL_VERTEX_SHADER),
-            OpenGL.GL.shaders.compileShader(fragment_shader,GL_FRAGMENT_SHADER))
+            OpenGL.GL.shaders.compileShader(fragment_shader,GL_FRAGMENT_SHADER)
+        )
         
         #vertix buffer object
         VBO = glGenBuffers(1)
@@ -161,7 +164,8 @@ class Quad:
         #positions attribut
         posAttrib = glGetAttribLocation(shader, "position")
         glEnableVertexAttribArray(posAttrib)
-        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*4,ctypes.c_void_p(0)) # (.. , abstand, offset {normale int aber als ctype})
+        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*4,ctypes.c_void_p(0)) 
+        # (.. , abstand, offset {normale int aber als ctype})
         
         """
         #farben attribut
@@ -173,24 +177,27 @@ class Quad:
         #texture attrib
         texAttrib = glGetAttribLocation(shader, "inTexCord")
         glEnableVertexAttribArray(texAttrib)
-        glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 6*4, ctypes.c_void_p(7*3))        
+        glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8*4, ctypes.c_void_p(8*3))        
 
         
-        #LOAD IMAGE
-        #image buffer
-
-        tex = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, tex)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        texture = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, texture)
+        #texture wrapping params
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT)
+        #texture filtering params
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)    
 
 
         
-        img = pygame.image.load("res/hexa.png")        
-        imgData = numpy.array(pygame.surfarray.array2d(img), numpy.uint8)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData)
+        #img = pygame.image.load("res/hexa.png").convert_alpha()
+        img = Image.open("res/test.jpg")
+        #imgData = img.convert("RGBA").tobytes()
+        imgData = numpy.array(img.convert("RGBA"), numpy.uint8)
+
+        #imgData = image.convert("RGBA").tobytes()
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData)
 
 
         
