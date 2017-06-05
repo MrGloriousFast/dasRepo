@@ -91,10 +91,10 @@ class Quad:
         #the quad as a numpy array of vertices
         #X, Y, Z, R, G, B
         self.vertices = numpy.array(
-            [-0.5, -0.5 ,  0.0,     1.0 , 0.0 , 0.0,
-              0.0, -0.5 ,  0.0,     0.0 , 1.0 , 0.0,
-              0.0,  0.5 ,  0.0,     0.0 , 0.0 , 1.0,
-             -0.5,  0.5 ,  0.0,     0.0 , 0.0 , 1.0],
+            [-0.5, -0.5 ,  0.0,     1.0 , 0.0 , 0.0,    0.0, 0.0,
+              0.0, -0.5 ,  0.0,     0.0 , 1.0 , 0.0,    1.0, 0.0,
+              0.0,  0.5 ,  0.0,     0.0 , 0.0 , 1.0,    1.0, 1.0,
+             -0.5,  0.5 ,  0.0,     0.0 , 0.0 , 1.0,    0.0, 1.0],
             dtype='float32')
             
         #we indicate which vertex we mean
@@ -109,12 +109,12 @@ class Quad:
         vertex_shader = """
         #version 330
         in vec3 position;
-        in vec3 color;
-        
-        out vec3 cornerColor;
-        
+        in vec2 inTexCord;
+       
+        out vec2 outTexCord;
+                
         void main(){
-            cornerColor = color;
+            outTexCord = inTexCord;
             gl_Position = vec4(position, 1.0f);
         }
         """
@@ -123,13 +123,14 @@ class Quad:
         #makes color and pixels out of shapes
         fragment_shader = """
         #version 330
-        in vec3 cornerColor;
+        in vec2 outTexCord;
+        uniform sampler2D samplerTex;
         
         out vec4 outColor;
         
         void main(){
             //r,g,b,alpha
-            outColor = vec4(cornerColor, 1.0f);
+            outColor = texture(samplerTex, outTexCord);
         }
         """
         
@@ -149,7 +150,7 @@ class Quad:
         #   GL_STATIC_DRAW , vertex does not change. uploaded once
         #   GL_DYNAMIC_DRAW ,vertex does change rarely (often drawn before change)
         #   GL_STREAM_DRAW , vertex changes with each draw
-        glBufferData(GL_ARRAY_BUFFER, 24*4, self.vertices, GL_STATIC_DRAW)
+        glBufferData(GL_ARRAY_BUFFER, 32*4, self.vertices, GL_STATIC_DRAW)
 
 
         #element buffer object
@@ -162,10 +163,36 @@ class Quad:
         glEnableVertexAttribArray(posAttrib)
         glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*4,ctypes.c_void_p(0)) # (.. , abstand, offset {normale int aber als ctype})
         
+        """
         #farben attribut
         colAttrib = glGetAttribLocation(shader, "color")
         glEnableVertexAttribArray(colAttrib)
         glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6*4, ctypes.c_void_p(4*3))
+        """
+
+        #texture attrib
+        texAttrib = glGetAttribLocation(shader, "inTexCord")
+        glEnableVertexAttribArray(texAttrib)
+        glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 6*4, ctypes.c_void_p(7*3))        
+
+        
+        #LOAD IMAGE
+        #image buffer
+
+        tex = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, tex)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+
+
+        
+        img = pygame.image.load("res/hexa.png")        
+        imgData = numpy.array(pygame.surfarray.array2d(img), numpy.uint8)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData)
+
+
         
         #use the program!
         #only one program can be active at one time
@@ -286,7 +313,8 @@ class Cube:
             
     def render(self):
         #draw!!!!
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, None)
+        #12 triangles with 3 vertices each!
+        glDrawElements(GL_TRIANGLES, 12*3, GL_UNSIGNED_INT, None)
     
     def update(self, deltaT):
 

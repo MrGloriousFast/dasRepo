@@ -16,8 +16,9 @@ def main():
     deltaT = int(1000/FPS)#just a good guess for the first loop
     screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
-    #cube
-    cube = obj.Cube()
+    #load out obj
+    #cube = obj.Cube()
+    cube = obj.Quad()
     
     #make it not buggy
     glEnable(GL_DEPTH_TEST)
@@ -36,7 +37,7 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
              
         #turn the cube
-        cube.update(time.time())
+        #cube.update(time.time())
         
         #draw!!!!
         cube.render()        
