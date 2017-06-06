@@ -93,6 +93,7 @@ class Quad:
     
         #create a new texture
         tex = Texture("res/awesomeface.png")
+        tex.bind(0)
         
         #the quad as a numpy array of vertices
         #X, Y, Z, R, G, B

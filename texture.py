@@ -14,8 +14,8 @@ class Texture:
         
         
         #load texture into buffer
-        texture = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, texture)
+        self.texture = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, self.texture)
         #texture wrapping params
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -27,6 +27,6 @@ class Texture:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData)
 
     #will be used to bind the texture to opengl so that it uses it. Opengl can bind many textures at once.
-    def bind(index):
-        glActivateTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, texture)
+    def bind(self, unit):
+        glActiveTexture(GL_TEXTURE0+unit)
+        glBindTexture(GL_TEXTURE_2D, self.texture)
