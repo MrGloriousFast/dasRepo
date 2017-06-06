@@ -18,7 +18,6 @@ def main():
 
     #load out obj
     #cube = obj.Cube()
-    #cube = obj.Cube()
     quad = obj.Quad()
     #triangle = obj.Triangle()
     

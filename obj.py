@@ -4,6 +4,7 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from PIL import Image
+from texture import *
 
 class Triangle:
     def __init__(self):
@@ -89,12 +90,16 @@ class Triangle:
             
 class Quad:
     def __init__(self):
+    
+        #create a new texture
+        tex = Texture("res/awesomeface.png")
+        
         #the quad as a numpy array of vertices
         #X, Y, Z, R, G, B
         self.vertices = numpy.array(
             [-1.0, -1.0 ,  0.0,     1.0 , 0.0 , 0.0,    0.0, 1.0,
-              0.0, -1.0 ,  0.0,     0.0 , 1.0 , 0.0,    1.0, 1.0,
-              0.0,  1.0 ,  0.0,     0.0 , 0.0 , 1.0,    1.0, 0.0,
+              1.0, -1.0 ,  0.0,     0.0 , 1.0 , 0.0,    1.0, 1.0,
+              1.0,  1.0 ,  0.0,     0.0 , 0.0 , 1.0,    1.0, 0.0,
              -1.0,  1.0 ,  0.0,     0.0 , 0.0 , 1.0,    0.0, 0.0],
             dtype='float32')
             
@@ -109,15 +114,17 @@ class Quad:
         #this is openGL language!  C-style language called GLSL (OpenGL Shading Language).     
         vertex_shader = """
         #version 330
-        in vec3 position;
+        in vec3 inposition;
         in vec2 inTexCord;
-       
+        in vec3 incolor;
+        
+        out vec4 color;
         out vec2 outTexCord;
                 
         void main(){
-            gl_Position = vec4(position, 1.0f);
+            gl_Position = vec4(inposition, 1.0f);
             outTexCord = inTexCord;
-
+            color = vec4(incolor,1.0f);
         }
         """
         
@@ -126,13 +133,16 @@ class Quad:
         fragment_shader = """
         #version 330
         in vec2 outTexCord;
-        uniform sampler2D samplerTex;
+        in vec4 color;
+        uniform sampler2D samplerTex1;
+        //uniform sampler2D samplerTex2;
         
         out vec4 outColor;
         
         void main(){
             //r,g,b,alpha
-            outColor = texture(samplerTex, outTexCord);
+            outColor = texture(samplerTex1, outTexCord)*color;
+            //outColor = mix(texture(samplerTex1, outTexCord), texture(samplerTex2, outTexCord), 0.2)
         }
         """
         
@@ -162,45 +172,21 @@ class Quad:
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6*4, indices, GL_STATIC_DRAW)
 
         #positions attribut
-        posAttrib = glGetAttribLocation(shader, "position")
+        posAttrib = glGetAttribLocation(shader, "inposition")
         glEnableVertexAttribArray(posAttrib)
         glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*4,ctypes.c_void_p(0)) 
         # (.. , abstand, offset {normale int aber als ctype})
         
-        """
         #farben attribut
-        colAttrib = glGetAttribLocation(shader, "color")
+        colAttrib = glGetAttribLocation(shader, "incolor")
         glEnableVertexAttribArray(colAttrib)
-        glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6*4, ctypes.c_void_p(4*3))
-        """
-
+        glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8*4, ctypes.c_void_p(4*3))
+        
         #texture attrib
         texAttrib = glGetAttribLocation(shader, "inTexCord")
         glEnableVertexAttribArray(texAttrib)
         glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8*4, ctypes.c_void_p(8*3))        
 
-        
-        texture = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, texture)
-        #texture wrapping params
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT)
-        #texture filtering params
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)    
-
-
-        
-        #img = pygame.image.load("res/hexa.png").convert_alpha()
-        img = Image.open("res/test.jpg")
-        #imgData = img.convert("RGBA").tobytes()
-        imgData = numpy.array(img.convert("RGBA"), numpy.uint8)
-
-        #imgData = image.convert("RGBA").tobytes()
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData)
-
-
-        
         #use the program!
         #only one program can be active at one time
         glUseProgram(shader)
@@ -215,18 +201,37 @@ class Quad:
 
 class Cube:
     def __init__(self):
+    
+    
+        #load an image
+        img = Image.open("res/cube.png")
+        imgData = numpy.array(img.convert("RGBA"), numpy.uint8)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 192, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData)
+
+        #relative positions in the texture
+        s = (1.0/6.0)
+        top    = [(0,0), (s,0), (s,s), (0,s)]
+        side0  = [(s,0), (2*s,0), (2*s,s), (s,s)]
+        side1  = [(2*s,0), (3*s,0), (3*s,s), (2*s,s)]
+        side2  = [(3*s,0), (4*s,0), (4*s,s), (3*s,s)]
+        side3  = [(4*s,0), (5*s,0), (5*s,s), (4*s,s)]
+        bottom = [(5*s,0), (6*s,0), (6*s,s), (5*s,s)]
+    
+        print(top)
+    
+    
         #the quad as a numpy array of vertices
         #X, Y, Z, R, G, B
         self.vertices = numpy.array(
-             [-0.5, -0.5 ,  -0.5,   1.0 , 0.0 , 0.0,
-               0.5, -0.5 ,  -0.5,   0.0 , 1.0 , 0.0,
-               0.5,  0.5 ,  -0.5,   0.0 , 0.0 , 1.0,
-              -0.5,  0.5 ,  -0.5,   1.0 , 0.0 , 0.0,
+             [-0.5, -0.5 ,  -0.5,   random.random() , random.random() , random.random(),
+               0.5, -0.5 ,  -0.5,   random.random() , random.random() , random.random(),
+               0.5,  0.5 ,  -0.5,   random.random() , random.random() , random.random(),
+              -0.5,  0.5 ,  -0.5,   random.random() , random.random() , random.random(),
               
-              -0.5, -0.5 ,  0.5,    1.0 , 0.0 , 0.0,
-               0.5, -0.5 ,  0.5,    0.0 , 1.0 , 0.0,
-               0.5,  0.5 ,  0.5,    0.0 , 0.0 , 1.0,
-              -0.5,  0.5 ,  0.5,    1.0 , 0.0 , 0.0]
+              -0.5, -0.5 ,  0.5,    random.random() , random.random() , random.random(),
+               0.5, -0.5 ,  0.5,    random.random() , random.random() , random.random(),
+               0.5,  0.5 ,  0.5,    random.random() , random.random() , random.random(),
+              -0.5,  0.5 ,  0.5,    random.random() , random.random() , random.random()]
              ,dtype='float32')
             
         #we indicate which vertex we mean to make a triangle
@@ -275,7 +280,7 @@ class Cube:
         
         void main(){
             //r,g,b,alpha
-            outColor = vec4(cornerColor, 1.0f);
+            outColor = vec4(cornerColor, 0.0f);
         }
         """
         
@@ -325,10 +330,10 @@ class Cube:
     
     def update(self, deltaT):
 
-        speedTurn = 0.1
+        speedTurn = 0.2
 
         rotx = pyrr.Matrix44.from_x_rotation(numpy.pi * deltaT* speedTurn)
-        roty = pyrr.Matrix44.from_y_rotation(numpy.pi * deltaT*speedTurn)
+        roty = pyrr.Matrix44.from_y_rotation(numpy.pi * deltaT* speedTurn)
         
         
         transformLoc = glGetUniformLocation(self.shader, "transform")
