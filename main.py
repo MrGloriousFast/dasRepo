@@ -3,40 +3,30 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
-import obj, camera
-from ParticleEmitter import *
-from Particle import *
+import obj
+from display import *
 
 def main():
-    pygame.display.init()
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-    display = (SCREEN_WIDTH,SCREEN_HEIGHT)
-    FPS = 60
-    deltaT = int(1000/FPS)#just a good guess for the first loop
-    screen = pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+
+    #x, y, fps
+    dis = Display(800, 600, 60)
+    
 
     #load out obj
     #cube = obj.Cube()
     quad = obj.Quad()
     #triangle = obj.Triangle()
     
-    #make it not buggy
-    glEnable(GL_DEPTH_TEST)
-    glClearColor(0.0, 0.0, 0.05, 0.0); #almost black but not bloack so we can see black things
     
     #wireframe mode
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
     
     while True:
-        #start measuring how long this loop will take
-        start = time.time()
+        #start measuring how long this loop will take and clear the screen
+        dis.clear()
 
         #all keyboard and mouse stuff goes there
         userInput()
-
-        #make the screen blank
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
              
         #turn the cube
         #cube.update(time.time())
@@ -45,17 +35,7 @@ def main():
         #cube.render()    
         quad.render()    
         
-        #FPS and deltaT calculation
-        pygame.display.flip()
-        end = time.time()
-        deltaT = end - start
-        waittime = int(1000/FPS - deltaT)
-        if(waittime > 0):
-            pygame.time.wait(waittime)
-        else:
-            #always wait at least one millisec
-            pygame.time.wait(1)
-   
+        dis.limitFps()   
 
 def userInput():
     #keyboard down presses

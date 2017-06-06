@@ -20,33 +20,11 @@ class Triangle:
         #makes a shape out of vertices
         #is a string so we can give this definition to opengl
         #this is openGL language!  C-style language called GLSL (OpenGL Shading Language).     
-        vertex_shader = """
-        #version 330
-        in vec3 position;
-        in vec3 color;
-        
-        out vec3 cornerColor;
-        
-        void main(){
-            cornerColor = color;
-            gl_Position = vec4(position, 1.0f);
-        }
-        """
+        vertex_shader = open('shaders/triangle.vert','r').readlines()
         
         #fragment shader colors
         #makes color and pixels out of shapes
-        fragment_shader = """
-        #version 330
-        in vec3 cornerColor;
-        
-        out vec4 outColor;
-        
-        void main(){
-            //r,g,b,alpha
-            outColor = vec4(cornerColor, 1.0f);
-        }
-        """
-        
+        fragment_shader = open('shaders/triangle.frag','r').readlines()
         
         #compile shader
         #one shader takes one vertex shader and one fragment shader
@@ -113,40 +91,11 @@ class Quad:
         #makes a shape out of vertices
         #is a string so we can give this definition to opengl
         #this is openGL language!  C-style language called GLSL (OpenGL Shading Language).     
-        vertex_shader = """
-        #version 330
-        in vec3 inposition;
-        in vec2 inTexCord;
-        in vec3 incolor;
-        
-        out vec4 color;
-        out vec2 outTexCord;
-                
-        void main(){
-            gl_Position = vec4(inposition, 1.0f);
-            outTexCord = inTexCord;
-            color = vec4(incolor,1.0f);
-        }
-        """
+        vertex_shader = open('shaders/quad.vert','r').readlines()     
         
         #fragment shader colors
         #makes color and pixels out of shapes
-        fragment_shader = """
-        #version 330
-        in vec2 outTexCord;
-        in vec4 color;
-        uniform sampler2D samplerTex1;
-        //uniform sampler2D samplerTex2;
-        
-        out vec4 outColor;
-        
-        void main(){
-            //r,g,b,alpha
-            outColor = texture(samplerTex1, outTexCord)*color;
-            //outColor = mix(texture(samplerTex1, outTexCord), texture(samplerTex2, outTexCord), 0.2)
-        }
-        """
-        
+        fragment_shader = open('shaders/quad.frag','r').readlines()
         
         #compile shader
         #one shader takes one vertex shader and one fragment shader
