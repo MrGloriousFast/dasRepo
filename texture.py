@@ -8,7 +8,8 @@ from PIL import Image
 class Texture:
     def __init__(self, path):
         #load an image
-        img = Image.open(path)
+        img = Image.open(path).transpose(Image.FLIP_TOP_BOTTOM)
+
         width, height = img.size
         imgData = numpy.array(img.convert("RGBA"), numpy.uint8)
         
@@ -27,6 +28,9 @@ class Texture:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgData)
 
     #will be used to bind the texture to opengl so that it uses it. Opengl can bind many textures at once.
-    def bind(self, unit):
+    def bind(self, unit=0):
         glActiveTexture(GL_TEXTURE0+unit)
         glBindTexture(GL_TEXTURE_2D, self.texture)
+        
+    def destructor(self):
+        glDeleteTextures(1)

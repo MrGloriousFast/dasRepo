@@ -5,8 +5,9 @@ from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
 
 class Display():
-    def __init__(self, width, height, fps, clearColor = (0.0, 0.0, 0.05, 0.0)):
+    def __init__(self, width, height, fps = 30, title = "TITLE", clearColor = (0.0, 0.0, 0.05, 0.0)):
         pygame.display.init()
+        pygame.display.set_caption(title)
         self.w = width
         self.h = height
         self.fps = fps
@@ -22,7 +23,7 @@ class Display():
         #make the screen blank
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         
-    def limitFps(self):
+    def flip(self):
  
         #FPS and deltaT calculation
         pygame.display.flip()

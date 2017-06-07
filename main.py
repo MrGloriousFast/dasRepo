@@ -3,24 +3,20 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
-import obj
+import obj, shader
 from display import *
 
 def main():
 
     #x, y, fps
-    dis = Display(800, 600, 60)
+    dis = Display(800, 600, 60, "evil engine #9; you can do eet!")
     
 
     #load out obj
     #cube = obj.Cube()
-    quad = obj.Quad()
-    #triangle = obj.Triangle()
-    
-    
-    #wireframe mode
-    #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-    
+    #quad = obj.Quad()
+    triangle = obj.Triangle()
+        
     while True:
         #start measuring how long this loop will take and clear the screen
         dis.clear()
@@ -33,9 +29,10 @@ def main():
         
         #draw!!!!
         #cube.render()    
-        quad.render()    
+        #quad.render()    
+        triangle.render()
         
-        dis.limitFps()   
+        dis.flip()   
 
 def userInput():
     #keyboard down presses
