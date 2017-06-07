@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
+import numpy, pyrr
 
 
 class AShader():
@@ -22,6 +23,20 @@ class AShader():
         glLinkProgram(self.program)
         glValidateProgram(self.program)
     
+        #uniform array
+        #uniforms are global variables for the graka
+        self.uniforms = []
+        self.uniforms.append(glGetUniformLocation(self.program, "worldmodel"))
+         
+    def update(self, worldmodel):
+        #0 -> first uniform we have, aka worldposition
+        #1 -> how many uniforms we send in
+        #GL_FALSE -> you wanna transpose the matrix?
+        glUseProgram(self.program)
+        glUniformMatrix4fv(self.uniforms[0], 1, GL_FALSE, worldmodel) 
+ 
+ 
+         
     #openGl use this shader!
     def use(self):
         glUseProgram(self.program)

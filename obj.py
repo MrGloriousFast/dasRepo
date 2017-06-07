@@ -1,5 +1,5 @@
 import pygame, math, numpy
-import random, pyrr
+import random, pyrr, time
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -7,6 +7,7 @@ from PIL import Image
 from texture import *
 from shader import AShader
 from mesh import *
+from movement import *
 
 class Triangle:
     def __init__(self):
@@ -22,14 +23,36 @@ class Triangle:
         self.mesh = Mesh(v)
         
         #load our shader and use it
-        AShader("shaders/triangle").use()
+        self.shader = AShader("shaders/triangle")
         
         #use a texture
-        tex = Texture("res/awesomeface.png")
-        tex.bind()
+        self.tex = Texture("res/awesomeface.png")
+        
+        #world position
+        self.worldPos = WorldModel([0.,0.,0.], [0,0,0])
+                    
+    def update(self, deltaT, frameCount):
+        #update world pos
+        self.worldPos.pos[0] = math.sin(time.time())
+        self.worldPos.pos[1] = math.cos(time.time())
+        #self.worldPos.pos[2] = math.sin(time.time()/5.)
+        
+        self.worldPos.rot[0] = math.sin(time.time())
+        self.worldPos.rot[1] = math.sin(time.time()/3.)
+        self.worldPos.rot[2] = math.sin(time.time()/7.)
+
+        self.worldPos.scale = [math.sin(time.time()/3.), 
+                               math.sin(time.time()/3.), 
+                               math.sin(time.time()/3.)]
+
+        
+        #tell the graka about the changes
+        self.shader.update(self.worldPos.get())
                     
     def render(self):
         #draw!!!!
+        self.shader.use()
+        self.tex.bind()
         self.mesh.draw()
             
 class Quad:

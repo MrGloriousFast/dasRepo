@@ -12,6 +12,7 @@ class Display():
         self.h = height
         self.fps = fps
         self.deltaT = float(1000/fps)#just a good guess for the first loop
+        self.frameCount = 0
         screen = pygame.display.set_mode((self.w,self.h), DOUBLEBUF|OPENGL)
         
         glEnable(GL_DEPTH_TEST)
@@ -25,6 +26,8 @@ class Display():
         
     def flip(self):
  
+        self.frameCount +=1
+        
         #FPS and deltaT calculation
         pygame.display.flip()
         self.end = time.time()

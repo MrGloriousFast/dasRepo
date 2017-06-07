@@ -3,13 +3,13 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
-import obj, shader
+import obj, shader, movement
 from display import *
 
 def main():
 
     #x, y, fps
-    dis = Display(800, 600, 60, "evil engine #9; you can do eet!")
+    dis = Display(800, 600, 160, "evil engine #9; you can do eet!")
     
 
     #load out obj
@@ -29,7 +29,8 @@ def main():
         
         #draw!!!!
         #cube.render()    
-        #quad.render()    
+        #quad.render()   
+        triangle.update(dis.deltaT, dis.frameCount) 
         triangle.render()
         
         dis.flip()   
