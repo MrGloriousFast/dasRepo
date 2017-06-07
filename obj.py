@@ -15,8 +15,8 @@ class Triangle:
         #texCord(x,y)
         v = []
         v.append(Vertex(( -0.5, -0.5 ,  0.0), (0.0 , 0.0)))
-        v.append(Vertex((  0.5, -0.5 ,  0.0), (1.0 , 0.0)))
-        v.append(Vertex((  0.0,  0.5 ,  0.0), (0.5 , 0.5)))
+        v.append(Vertex((  0.5, -0.5 ,  0.0), (10.0 , 0.0)))
+        v.append(Vertex((  0.0,  0.5 ,  0.0), (5.0 , 10.0)))
         
         #make the mesh
         self.mesh = Mesh(v)
