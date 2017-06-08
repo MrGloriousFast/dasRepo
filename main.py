@@ -22,6 +22,7 @@ def main():
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
     pygame.event.get(pygame.MOUSEMOTION)
+    pygame.mouse.set_visible(False)
         
     while True:
         #start measuring how long this loop will take and clear the screen
