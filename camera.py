@@ -23,7 +23,6 @@ class Camera():
         
     #returns the perspective matrix                
     def get(self):
-        print(self.posWorld.getString())
         return numpy.dot(self.posWorld.get(), self.perspective)
         
     def forward(self, distance):

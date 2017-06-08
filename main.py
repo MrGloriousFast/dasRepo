@@ -54,7 +54,6 @@ def userInput(camera, display):
         
             x, y = event.rel
             event.pos = (display.w/2,display.h/2)
-            print("mousemotion", x, y)
 
             #look around
             camera.turnRight( -x*deltaT)
@@ -63,6 +62,8 @@ def userInput(camera, display):
             #capture mouse
             pygame.mouse.set_pos(display.w/2., display.w/2)
             pygame.event.get(pygame.MOUSEMOTION)
+            
+            print(camera.posWorld.getString())
 
     #back forth
     if pressed[pygame.K_w]:
