@@ -29,25 +29,26 @@ class Triangle:
         self.tex = Texture("res/awesomeface.png")
         
         #world position
-        self.worldPos = WorldModel([0.,0.,0.], [0,0,0])
+        self.posWorld = WorldModel([0.,0.,0.], [0,0,0])
                     
-    def update(self, deltaT, frameCount):
+    def update(self, deltaT, frameCount, cam):
+        """
         #update world pos
-        self.worldPos.pos[0] = math.sin(time.time())
-        self.worldPos.pos[1] = math.cos(time.time())
+        self.posWorld.pos[0] = math.sin(time.time())
+        self.posWorld.pos[1] = math.cos(time.time())
         #self.worldPos.pos[2] = math.sin(time.time()/5.)
         
-        self.worldPos.rot[0] = math.sin(time.time())
-        self.worldPos.rot[1] = math.sin(time.time()/3.)
-        self.worldPos.rot[2] = math.sin(time.time()/7.)
+        self.posWorld.rot[0] = math.sin(time.time())
+        self.posWorld.rot[1] = math.sin(time.time()/3.)
+        self.posWorld.rot[2] = math.sin(time.time()/7.)
 
-        self.worldPos.scale = [math.sin(time.time()/3.), 
+        self.posWorld.scale = [math.sin(time.time()/3.), 
                                math.sin(time.time()/3.), 
                                math.sin(time.time()/3.)]
-
+        """
         
         #tell the graka about the changes
-        self.shader.update(self.worldPos.get())
+        self.shader.update(self.posWorld.get(), cam.get())
                     
     def render(self):
         #draw!!!!
