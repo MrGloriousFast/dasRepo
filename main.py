@@ -10,9 +10,9 @@ from camera import *
 def main():
 
     #x, y, fps
-    dis = Display(800, 600, 60, "evil engine #9")
+    dis = Display(1600, 900, 60, "evil engine #9")
 
-    cam = Camera((800, 600))
+    cam = Camera((dis.w, dis.h))
 
     #load out obj
     #cube = obj.Cube()
@@ -70,9 +70,9 @@ def userInput(camera, display):
 
             #capture mouse
             pygame.mouse.set_pos(display.w/2., display.w/2)
-            pygame.event.get(pygame.MOUSEMOTION)
+            pygame.event.get(pygame.MOUSEMOTION) #steal the new mouse event and no nothing with it
             
-            print(camera.posWorld.getString())
+            print(camera.posWorld.getString(), deltaT)
 
     #back forth
     if pressed[pygame.K_w]:

@@ -14,13 +14,17 @@ class Triangle:
         #the triangle as an array of vertices
         #pos(x,y,z)
         #texCord(x,y)
-        v = []
-        v.append(Vertex(( -0.5, -0.5 ,  0.0), (0.0 , 0.0)))
-        v.append(Vertex((  0.5, -0.5 ,  0.0), (10.0 , 0.0)))
-        v.append(Vertex((  0.0,  0.5 ,  0.0), (5.0 , 10.0)))
+        v = [ -0.5, -0.5 ,  0.0,
+               0.5, -0.5 ,  0.0,
+               0.0,  0.5 ,  0.0]
+               
+        t =[  0.0,  0.0,
+             10.0,  0.0,
+              5.0, 10.0]
         
+        i = [0,1,2]
         #make the mesh
-        self.mesh = Mesh(v)
+        self.mesh = Mesh(v, t, i)
         
         #load our shader and use it
         self.shader = AShader("shaders/triangle")
