@@ -11,9 +11,9 @@ class WorldModel():
     def __init__(self, pos= [0,0,0], rot= [0,0,0], scale = [1.0,1.0,1.0]):
         
         #these define the position, rotation and scale
-        self.pos = numpy.array(pos,dtype='float32')
-        self.rot = numpy.array(rot,dtype='float32')
-        self.scale = numpy.array(scale,dtype='float32')
+        self.pos = numpy.array(pos,dtype='float32') #pos in the world
+        self.rot = numpy.array(rot,dtype='float32') #rot relative to itself
+        self.scale = numpy.array(scale,dtype='float32') #relative to itself
                 
     def get(self):
        #generate the world matrix
@@ -25,15 +25,13 @@ class WorldModel():
         roty  = pyrr.matrix44.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix44.create_from_z_rotation( self.rot[2])
         #matRot = rotz * roty * rotz
-        matRot = numpy.dot(rotx, roty)
-        matRot = numpy.dot(matRot, rotz)
+        matRot = roty.dot(roty).dot(rotz)
         
        #scale
         scale = pyrr.matrix44.create_from_scale(self.scale)       
         
        #matWorld = pos * matRot * scale
-        matWorld = numpy.dot(pos, matRot)
-        matWorld = numpy.dot(matWorld, scale)
+        matWorld = scale.dot(matRot).dot(pos)
         
         return matWorld
 
@@ -60,15 +58,16 @@ class WorldModel():
         roty  = pyrr.matrix33.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix33.create_from_z_rotation( self.rot[2])
         #matRot = rotz * roty * rotz
-        matRot = numpy.dot(rotx, roty)
-        matRot = numpy.dot(matRot, rotz )        
+        posChange = rotx.dot(roty).dot(rotz).dot( pyrr.Vector3([dx,dy,dz]) )
 
-        self.pos += numpy.dot(matRot , pyrr.Vector3([dx,dy,dz]))
+        self.pos += posChange 
         
     #always scale into all directions with the same scalar
     def resize(self, scalar):
         self.scale = numpy.array([self.scale[0]*scalar, self.scale[1]*scalar, self.scale[2]*scalar],dtype='float32')
 
+    def setSize(self, size):
+        self.scale = numpy.array([size, size, size],dtype='float32')
 
     def limitRot(self):
         self.rot = [

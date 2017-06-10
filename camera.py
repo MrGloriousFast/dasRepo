@@ -6,7 +6,7 @@ class Camera():
 
         self.posWorld = posWorld
         #move back a little
-        self.posWorld.pos = [0,0,-2]         
+        self.posWorld.pos = [0,0,-100.]         
         #turn camaera to view 0,0,0,
         self.posWorld.rot = [0.,0.,0.]
 

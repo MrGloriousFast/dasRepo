@@ -17,6 +17,7 @@ def main():
     space fly up
     
     1,2,3 will change render from surfaces to lines/dots
+    r stop rotation of cubes
     ESC to quit
     
     """
@@ -28,7 +29,7 @@ def main():
 
     #create cubes
     cubes = []
-    for i in range(0,49):
+    for i in range(0,99):
         c = obj.Cube()
         c.posWorld.move((random.random()-0.5)*10.,(random.random()-0.5)*10.,(random.random()-0.5)*10.)
         c.posWorld.resize(random.random()*0.3)
@@ -50,10 +51,20 @@ def main():
         #all keyboard and mouse stuff goes there
         userInput(cam, dis)
              
+        ci = 0
         for c in cubes:
+                
+            #whirl it around
+            if not pygame.key.get_pressed()[K_r]:
+                c.posWorld.rotateRel(0.005*ci,0.005*ci,0.005*ci)
+                c.posWorld.setSize(.01*ci*(0.5+0.5*abs(math.sin(time.time()))))
+                #c.posWorld.moveRel(0,0.5,0)
+
+        
+        
             c.update(dis.deltaT, dis.frameCount, cam)
             c.render()
-        
+            ci += 1
         dis.flip()   
 
 def userInput(camera, display):

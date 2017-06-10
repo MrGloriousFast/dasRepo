@@ -171,10 +171,6 @@ class Cube:
                     
     def update(self, deltaT, frameCount, cam):
         
-        #whirl it around
-        if not pygame.key.get_pressed()[K_r]:
-            self.posWorld.rotateRel(-0.02, 0.01 , 0.015)
-        
         #tell the graka about the changes
         self.shader.update(self.posWorld.get(), cam.get())
                     
