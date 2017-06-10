@@ -28,10 +28,10 @@ def main():
 
     #create cubes
     cubes = []
-    for i in range(0,99):
+    for i in range(0,49):
         c = obj.Cube()
-        c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*100.,(random.random()-0.5)*100.)
-        c.posWorld.resize(random.random()*2.)
+        c.posWorld.move((random.random()-0.5)*10.,(random.random()-0.5)*10.,(random.random()-0.5)*10.)
+        c.posWorld.resize(random.random()*0.3)
         cubes.append(c)
     c = obj.Cube()
     cubes.append(c)
