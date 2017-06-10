@@ -50,11 +50,11 @@ class Camera():
 
 
     def turnRight(self,degree):
-        self.posWorld.rotate(0, degree * self.speedTurn, 0)
-        self.limitAngle()
+        self.posWorld.rotateRel(0, degree * self.speedTurn, 0)
+        #self.limitAngle()
         
     def turnUp(self,degree):
-        self.posWorld.rotate(degree * self.speedTurn,0,0)
+        self.posWorld.rotateRel(degree * self.speedTurn,0,0)
         self.limitAngle()
         
     #no back/ behind spins
@@ -63,5 +63,4 @@ class Camera():
             self.posWorld.rot[0] = numpy.pi/2.
         if(self.posWorld.rot[0]  < -numpy.pi/2.):
             self.posWorld.rot[0] = -numpy.pi/2.
-
         

@@ -1,4 +1,4 @@
-import pygame, math, numpy
+import pygame, math, numpy, os
 import random, pyrr, time
 from pygame.locals import *
 from OpenGL.GL import *
@@ -27,10 +27,10 @@ class Triangle:
         self.mesh = Mesh(v, t, i)
         
         #load our shader and use it
-        self.shader = AShader("shaders/default")
+        self.shader = AShader(os.path.join('shaders','default'))
         
         #use a texture
-        self.tex = Texture("res/awesomeface.png")
+        self.tex = Texture(os.path.join('res','awesomeface.png'))
         
         #world position
         self.posWorld = WorldModel([0.,0.,0.], [0,0,0])
@@ -67,10 +67,10 @@ class Quad:
         self.mesh = Mesh(v, t, i)
         
         #load our shader and use it
-        self.shader = AShader("shaders/default")
+        self.shader = AShader(os.path.join('shaders','default'))
         
         #use a texture
-        self.tex = Texture("res/awesomeface.png")
+        self.tex = Texture(os.path.join('res','awesomeface.png'))
         
         #world position
         self.posWorld = WorldModel([0.,0.,0.], [0,0,0])
@@ -160,10 +160,10 @@ class Cube:
         self.mesh = Mesh(v, t, index)
         
         #load our shader and use it
-        self.shader = AShader("shaders/default")
+        self.shader = AShader(os.path.join('shaders','default'))
         
         #use a texture
-        self.tex = Texture("res/cube.png")
+        self.tex = Texture(os.path.join('res','cube.png'))
         
         #world position
         self.posWorld = WorldModel()
