@@ -29,7 +29,7 @@ class Camera():
         rotx  = pyrr.matrix44.create_from_x_rotation( self.posWorld.rot[0])
         roty  = pyrr.matrix44.create_from_y_rotation( self.posWorld.rot[1])
         rotz  = pyrr.matrix44.create_from_z_rotation( self.posWorld.rot[2])
-        matRot = rotx.dot(roty).dot(rotz)
+        matRot = rotz.dot(roty).dot(rotx)
        #scale
         scale = pyrr.matrix44.create_from_scale(self.posWorld.scale)       
         view = pos.dot(matRot).dot(scale) #is turned around compared to obj
@@ -42,7 +42,7 @@ class Camera():
         self.posWorld.moveRel(0,0, distance * self.speedMove)
         
     def upward(self, distance):
-        self.posWorld.moveRel(0,-distance * self.speedMove, 0)
+        self.posWorld.move(0,distance * self.speedMove, 0)
         
     def sideward(self,distance):
         self.posWorld.moveRel(distance * self.speedMove, 0, 0)
@@ -54,7 +54,8 @@ class Camera():
         #self.limitAngle()
         
     def turnUp(self,degree):
-        self.posWorld.rotateRel(degree * self.speedTurn,0,0)
+
+        self.posWorld.rotateRel(degree,0,0)
         self.limitAngle()
         
     #no back/ behind spins
@@ -63,4 +64,8 @@ class Camera():
             self.posWorld.rot[0] = numpy.pi/2.
         if(self.posWorld.rot[0]  < -numpy.pi/2.):
             self.posWorld.rot[0] = -numpy.pi/2.
+        if(self.posWorld.rot[2]  > numpy.pi/2.):
+            self.posWorld.rot[2] = numpy.pi/2.
+        if(self.posWorld.rot[2]  < -numpy.pi/2.):
+            self.posWorld.rot[2] = -numpy.pi/2.
         

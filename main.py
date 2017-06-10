@@ -31,7 +31,7 @@ def main():
     cubes = []
     for i in range(0,99):
         c = obj.Cube()
-        c.posWorld.move((random.random()-0.5)*10.,(random.random()-0.5)*10.,(random.random()-0.5)*10.)
+        c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
         c.posWorld.resize(random.random()*0.3)
         cubes.append(c)
     c = obj.Cube()
@@ -106,9 +106,9 @@ def userInput(camera, display):
 
     #up, down
     if pressed[pygame.K_SPACE]:
-        camera.upward(deltaT)
-    if pressed[pygame.K_LSHIFT]:
         camera.upward(-deltaT)
+    if pressed[pygame.K_LSHIFT]:
+        camera.upward(deltaT)
 
     #left right
     if pressed[pygame.K_a]:

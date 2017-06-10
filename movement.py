@@ -43,9 +43,10 @@ class WorldModel():
         roty  = pyrr.matrix33.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix33.create_from_z_rotation( self.rot[2])
         #matRot = rotz * roty * rotz
-        posChange = rotx.dot(roty).dot(rotz).dot( pyrr.Vector3([dx,dy,dz]) )
+        rotChange = rotx.dot(roty).dot(rotz).dot( pyrr.Vector3([dx,dy,dz]) )
 
-        self.rot += posChange 
+        self.rot += rotChange 
+        self.limitRot()
 
     
     #in world coord
@@ -66,7 +67,7 @@ class WorldModel():
         roty  = pyrr.matrix33.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix33.create_from_z_rotation( self.rot[2])
         #matRot = rotz * roty * rotz
-        posChange = rotx.dot(roty).dot(rotz).dot( pyrr.Vector3([dx,dy,dz]) )
+        posChange = rotz.dot(roty).dot(rotx).dot( pyrr.Vector3([dx,dy,dz]) )
 
         self.pos += posChange 
         
@@ -80,7 +81,7 @@ class WorldModel():
     def limitRot(self):
         self.rot = [
             ((self.rot[0]+numpy.pi) % (2.*numpy.pi))-numpy.pi,
-            ((self.rot[1]+numpy.pi) % (2.*numpy.pi))-numpy.pi,
+            ((self.rot[1]) % (2.*numpy.pi)), #0 to 2pi
             ((self.rot[2]+numpy.pi) % (2.*numpy.pi))-numpy.pi,
         ]
 
