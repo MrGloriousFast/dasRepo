@@ -102,31 +102,40 @@ class Cube:
               0.5,  0.5 ,  0.5,
              -0.5,  0.5 ,  0.5]
         
+        
+        
+        
+        
+        """
+        tried to only texture one side, that works but the other sides are all fucked up.
+        They should be only the color of the pixel at 0,0 ...
+        """
         #one side of the cube is 1/6 of the image
         s = 1./6.
-
         #we have to give each triangle three texCords        
-        t = [
-            #1
+        t = [#1
             0,0,  s,0, s,1,
             0,0,  0,1, s,1,
             
+            #2
             0,0,  0,0, 0,0,
             0,0,  0,0, 0,0,
             
+            #3
             0,0,  0,0, 0,0,
             0,0,  0,0, 0,0,
             
+            #6
             0,0,  0,0, 0,0,
             0,0,  0,0, 0,0,
             
+            #7
             0,0,  0,0, 0,0,
             0,0,  0,0, 0,0,
             
+            #8
             0,0,  0,0, 0,0,
-            0,0,  0,0, 0,0,
-            
-            ]
+            0,0,  0,0, 0,0]
 
             
 
