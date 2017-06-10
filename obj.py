@@ -27,7 +27,7 @@ class Triangle:
         self.mesh = Mesh(v, t, i)
         
         #load our shader and use it
-        self.shader = AShader("shaders/triangle")
+        self.shader = AShader("shaders/default")
         
         #use a texture
         self.tex = Texture("res/awesomeface.png")
@@ -67,7 +67,7 @@ class Quad:
         self.mesh = Mesh(v, t, i)
         
         #load our shader and use it
-        self.shader = AShader("shaders/triangle")
+        self.shader = AShader("shaders/default")
         
         #use a texture
         self.tex = Texture("res/awesomeface.png")
@@ -91,7 +91,7 @@ class Quad:
 
 class Cube:
     def __init__(self):
-        #the cube an array of vertices
+        #the cube, an array of 8 vertices
         v = [-0.5, -0.5 ,  -0.5,
               0.5, -0.5 ,  -0.5,
               0.5,  0.5 ,  -0.5,
@@ -102,17 +102,14 @@ class Cube:
               0.5,  0.5 ,  0.5,
              -0.5,  0.5 ,  0.5]
         
-        
-        
-        
-        
         """
         tried to only texture one side, that works but the other sides are all fucked up.
         They should be only the color of the pixel at 0,0 ...
         """
         #one side of the cube is 1/6 of the image
+        #image is 192x32 = (6x1)*32 pixel
         s = 1./6.
-        #we have to give each triangle three texCords        
+        #we have to give each triangle three texture coords        
         t = [#1
             0,0,  s,0, s,1,
             0,0,  0,1, s,1,
@@ -125,23 +122,20 @@ class Cube:
             0,0,  0,0, 0,0,
             0,0,  0,0, 0,0,
             
+            #4
+            0,0,  0,0, 0,0,
+            0,0,  0,0, 0,0,
+            
+            #5
+            0,0,  0,0, 0,0,
+            0,0,  0,0, 0,0,
+            
             #6
-            0,0,  0,0, 0,0,
-            0,0,  0,0, 0,0,
-            
-            #7
-            0,0,  0,0, 0,0,
-            0,0,  0,0, 0,0,
-            
-            #8
             0,0,  0,0, 0,0,
             0,0,  0,0, 0,0]
 
-            
 
-
-
-
+        #indicies we use to render the cube
         i =      [0, 1, 2,#bottom
                   2, 3, 0, 
                   0, 1, 5,#front
@@ -159,7 +153,7 @@ class Cube:
         self.mesh = Mesh(v, t, i)
         
         #load our shader and use it
-        self.shader = AShader("shaders/triangle")
+        self.shader = AShader("shaders/default")
         
         #use a texture
         self.tex = Texture("res/cube.png")

@@ -36,7 +36,6 @@ class Camera():
 
     def turnRight(self,degree):
         self.posWorld.rotateRel(0, degree * self.speedTurn, 0)
-        self.limitAngle()
         
     def turnUp(self,degree):
         self.posWorld.rotateRel(degree * self.speedTurn,0,0)

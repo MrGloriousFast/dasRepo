@@ -22,16 +22,17 @@ class Display():
 
         screen = pygame.display.set_mode((self.w,self.h), DOUBLEBUF|OPENGL)
         
-        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_DEPTH_TEST) #unfuck 3d surfaces, might make it slower
         glClearColor(*clearColor)# that star just unpacks out tuple
     
     def getActualFps(self):
 
         if (time.time() > 5+self.frameCountTimer):
             #update timer
+            delta = time.time() - self.frameCountTimer
             self.frameCountTimer = time.time()
             #
-            print("fps: ", (self.frameCount - self.frameCountOld)/5.)
+            print("fps: ", (self.frameCount - self.frameCountOld)/delta)
             self.frameCountOld = self.frameCount
    
     def clear(self):
