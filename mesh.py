@@ -14,12 +14,14 @@ class Mesh():
         tSize = 2 #bytes per elemnt in an array
         iSize = 1 #bytes per elemnt in an array
         
+
+        
+        
         #vertix buffer object for position
         glBindBuffer(GL_ARRAY_BUFFER, glGenBuffers(1))
         glBufferData(GL_ARRAY_BUFFER, self.verticies.shape[0]*vSize, self.verticies, GL_STATIC_DRAW)
     
         glEnableVertexAttribArray(0)
-        #..., jump over stuff, start)
         glVertexAttribPointer(0, 3, GL_HALF_FLOAT, GL_FALSE, 0, ctypes.c_void_p(0))
     
     
@@ -29,7 +31,6 @@ class Mesh():
         glBufferData(GL_ARRAY_BUFFER, self.texCords.shape[0]*tSize, self.texCords, GL_STATIC_DRAW)
     
         glEnableVertexAttribArray(1)
-        #..., jump over stuff, start)
         glVertexAttribPointer(1, 2, GL_HALF_FLOAT, GL_FALSE, 0, ctypes.c_void_p(0))
         
         

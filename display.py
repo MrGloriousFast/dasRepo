@@ -8,16 +8,32 @@ class Display():
     def __init__(self, width, height, fps = 30, title = "TITLE", clearColor = (0.0, 0.0, 0.05, 0.0)):
         pygame.display.init()
         pygame.display.set_caption(title)
+
         self.w = width
         self.h = height
+
         self.fps = fps
         self.deltaT = float(1000/fps)#just a good guess for the first loop
+
         self.frameCount = 0
+        self.frameCountOld = 0
+        self.frameCountTimer = 0
+
+
         screen = pygame.display.set_mode((self.w,self.h), DOUBLEBUF|OPENGL)
         
         glEnable(GL_DEPTH_TEST)
         glClearColor(*clearColor)# that star just unpacks out tuple
     
+    def getActualFps(self):
+
+        if (time.time() > 5+self.frameCountTimer):
+            #update timer
+            self.frameCountTimer = time.time()
+            #
+            print("fps: ", (self.frameCount - self.frameCountOld)/5.)
+            self.frameCountOld = self.frameCount
+   
     def clear(self):
         self.start = time.time()
 
@@ -27,6 +43,8 @@ class Display():
     def flip(self):
  
         self.frameCount +=1
+        
+        self.getActualFps()
         
         #FPS and deltaT calculation
         pygame.display.flip()

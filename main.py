@@ -9,15 +9,32 @@ from camera import *
 
 def main():
 
+    """
+    controls:
+    wasd move (relative to view direction)
+    mouse look around
+    shift fly down
+    space fly up
+    
+    1,2,3 will change render from surfaces to lines/dots
+    ESC to quit
+    
+    """
+
     #x, y, fps
-    dis = Display(1600, 900, 60, "evil engine #9")
+    dis = Display(800, 600, 60, "evil engine #9")
 
     cam = Camera((dis.w, dis.h))
 
-    #load out obj
-    #cube = obj.Cube()
-    #quad = obj.Quad()
-    triangle = obj.Triangle()
+    #create cubes
+    cubes = []
+    for i in range(0,99):
+        c = obj.Cube()
+        c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*100.,(random.random()-0.5)*100.)
+        c.posWorld.resize(random.random()*2.)
+        cubes.append(c)
+    c = obj.Cube()
+    cubes.append(c)
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
@@ -33,14 +50,9 @@ def main():
         #all keyboard and mouse stuff goes there
         userInput(cam, dis)
              
-        #turn the cube
-        #cube.update(time.time())
-        
-        #draw!!!!
-        #cube.render()    
-        #quad.render()   
-        triangle.update(dis.deltaT, dis.frameCount, cam) 
-        triangle.render()
+        for c in cubes:
+            c.update(dis.deltaT, dis.frameCount, cam)
+            c.render()
         
         dis.flip()   
 
@@ -70,7 +82,7 @@ def userInput(camera, display):
 
             #capture mouse
             pygame.mouse.set_pos(display.w/2., display.w/2)
-            pygame.event.get(pygame.MOUSEMOTION) #steal the new mouse event and no nothing with it
+            pygame.event.get(pygame.MOUSEMOTION) #steal the new mouse event and do nothing with it to reset it
             
             print(camera.posWorld.getString(), deltaT)
 

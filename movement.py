@@ -25,8 +25,8 @@ class WorldModel():
         roty  = pyrr.matrix44.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix44.create_from_z_rotation( self.rot[2])
         #matRot = rotz * roty * rotz
-        matRot = numpy.dot(rotz, roty)
-        matRot = numpy.dot(matRot, rotx)
+        matRot = numpy.dot(rotx, roty)
+        matRot = numpy.dot(matRot, rotz)
         
        #scale
         scale = pyrr.matrix44.create_from_scale(self.scale)       
@@ -60,14 +60,15 @@ class WorldModel():
         roty  = pyrr.matrix33.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix33.create_from_z_rotation( self.rot[2])
         #matRot = rotz * roty * rotz
-        matRot = numpy.dot(rotz, roty)
-        matRot = numpy.dot(matRot, rotx)        
+        matRot = numpy.dot(rotx, roty)
+        matRot = numpy.dot(matRot, rotz )        
 
         self.pos += numpy.dot(matRot , pyrr.Vector3([dx,dy,dz]))
         
     #always scale into all directions with the same scalar
-    def scale(self, scalar):
-        self.scale = [self.scale[0]*scalar, self.scale[1]*scalar, self.scale[2]*scalar]
+    def resize(self, scalar):
+        self.scale = numpy.array([self.scale[0]*scalar, self.scale[1]*scalar, self.scale[2]*scalar],dtype='float32')
+
 
     def limitRot(self):
         self.rot = [
