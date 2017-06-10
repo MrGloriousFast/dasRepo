@@ -13,10 +13,10 @@ class Mesh():
         #arrays that we will give the graka
         self.verticies = numpy.array(verticies,dtype='float16')
         self.texCords  = numpy.array(texCords,dtype='float16')
-        self.indicies  = numpy.array(indicies,dtype='uint16')
+        self.indicies  = numpy.array(indicies,dtype='uint8')
         vSize = 2 #bytes per elemnt in an array
         tSize = 2 #bytes per elemnt in an array
-        iSize = 2 #bytes per elemnt in an array
+        iSize = 1 #bytes per elemnt in an array
 
         #print(verticies)
         #print(texCords)

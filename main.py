@@ -56,7 +56,7 @@ def main():
                 
             #whirl it around
             if not pygame.key.get_pressed()[K_r]:
-                c.posWorld.rotateRel(0.005*ci,0.005*ci,0.005*ci)
+                c.posWorld.rotateRel(0.001*ci,0.001*ci,0.001*ci)
                 c.posWorld.setSize(.01*ci*(0.5+0.5*abs(math.sin(time.time()))))
                 #c.posWorld.moveRel(0,0.5,0)
 
@@ -94,8 +94,9 @@ def userInput(camera, display):
             #capture mouse
             pygame.mouse.set_pos(display.w/2., display.w/2)
             pygame.event.get(pygame.MOUSEMOTION) #steal the new mouse event and do nothing with it to reset it
-            
-            print(camera.posWorld.getString(), deltaT)
+            print()
+            print(camera.posWorld.getString())
+            #print(camera.view())
 
     #back forth
     if pressed[pygame.K_w]:

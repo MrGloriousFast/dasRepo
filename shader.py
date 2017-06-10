@@ -27,15 +27,18 @@ class AShader():
         #uniforms are global variables for the graka
         self.uniforms = []
         self.uniforms.append(glGetUniformLocation(self.program, "worldmodel"))
-        self.uniforms.append(glGetUniformLocation(self.program, "camera"))
+        self.uniforms.append(glGetUniformLocation(self.program, "view"))
+        self.uniforms.append(glGetUniformLocation(self.program, "projection"))
+
          
-    def update(self, worldmodel, camera):
+    def update(self, worldmodel, view, projection):
         #0 -> first uniform we have, aka worldposition
         #1 -> how many uniforms we send in
         #GL_FALSE -> you wanna transpose the matrix?
         glUseProgram(self.program)
         glUniformMatrix4fv(self.uniforms[0], 1, GL_FALSE, worldmodel)
-        glUniformMatrix4fv(self.uniforms[1], 1, GL_FALSE, camera) 
+        glUniformMatrix4fv(self.uniforms[1], 1, GL_FALSE, view) 
+        glUniformMatrix4fv(self.uniforms[2], 1, GL_FALSE, projection)         
  
  
          

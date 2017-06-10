@@ -166,13 +166,12 @@ class Cube:
         self.tex = Texture("res/cube.png")
         
         #world position
-        self.posWorld = WorldModel([0.,0.,0.], [0,0,0])
-        self.posWorld.rotateRel(0,0.7,0)
+        self.posWorld = WorldModel()
                     
     def update(self, deltaT, frameCount, cam):
         
         #tell the graka about the changes
-        self.shader.update(self.posWorld.get(), cam.get())
+        self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
                     
     def render(self):
         #draw!!!!

@@ -24,21 +24,29 @@ class WorldModel():
         rotx  = pyrr.matrix44.create_from_x_rotation( self.rot[0])
         roty  = pyrr.matrix44.create_from_y_rotation( self.rot[1])
         rotz  = pyrr.matrix44.create_from_z_rotation( self.rot[2])
-        #matRot = rotz * roty * rotz
-        matRot = roty.dot(roty).dot(rotz)
+        #matRot = rotx * roty * rotz
+        matRot = rotx.dot(roty).dot(rotz)
         
        #scale
         scale = pyrr.matrix44.create_from_scale(self.scale)       
         
        #matWorld = pos * matRot * scale
         matWorld = scale.dot(matRot).dot(pos)
+        #matWorld = pos.dot(matRot).dot(scale) #definatly wrong!
         
         return matWorld
 
     #in world coord        
     def rotate(self, dx, dy, dz):
-        #todo
-        print("rotate in world coord not implemented yet.")
+        
+        rotx  = pyrr.matrix33.create_from_x_rotation( self.rot[0])
+        roty  = pyrr.matrix33.create_from_y_rotation( self.rot[1])
+        rotz  = pyrr.matrix33.create_from_z_rotation( self.rot[2])
+        #matRot = rotz * roty * rotz
+        posChange = rotx.dot(roty).dot(rotz).dot( pyrr.Vector3([dx,dy,dz]) )
+
+        self.rot += posChange 
+
     
     #in world coord
     def move(self, dx, dy, dz): 
