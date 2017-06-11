@@ -8,6 +8,7 @@ from texture import *
 from shader import AShader
 from mesh import *
 from movement import *
+from grid import *
 
 class Triangle:
     def __init__(self):
@@ -19,8 +20,8 @@ class Triangle:
                0.0,  0.5 ,  0.0]
                
         t =[  0.0,  0.0,
-             10.0,  0.0,
-              5.0, 10.0]
+              1.0,  0.0,
+               .5,  1.0]
         
         i = [0,1,2]
         #make the mesh
@@ -33,13 +34,13 @@ class Triangle:
         self.tex = Texture(os.path.join('res','awesomeface.png'))
         
         #world position
-        self.posWorld = WorldModel([0.,0.,0.], [0,0,0])
+        self.posWorld = WorldModel()
                     
     def update(self, deltaT, frameCount, cam):
         
         #tell the graka about the changes
-        self.shader.update(self.posWorld.get(), cam.get())
-                    
+        self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
+                     
     def render(self):
         #draw!!!!
         self.shader.use()
@@ -54,12 +55,18 @@ class Quad:
         v = [ -0.5, -0.5 ,  0.0,
                0.5, -0.5 ,  0.0,
                0.5,  0.5 ,  0.0,
-              -0.5,  0.5 ,  0.0]
+               
+               0.5,  0.5 ,  0.0,
+              -0.5,  0.5 ,  0.0,
+              -0.5, -0.5 ,  0.0]
                
         t =[  0.0,  0.0,
-             10.0,  0.0,
-             10.0, 10.0,
-              0.0, 10.0]
+              1.0,  0.0,
+              1.0,  1.0,
+              
+              1.0,  1.0,
+              0.0,  1.0,
+              0.0,  0.0]
         
         i = [0,1,2,
              2,3,0]
@@ -73,12 +80,12 @@ class Quad:
         self.tex = Texture(os.path.join('res','awesomeface.png'))
         
         #world position
-        self.posWorld = WorldModel([0.,0.,0.], [0,0,0])
+        self.posWorld = WorldModel()
                     
     def update(self, deltaT, frameCount, cam):
         
         #tell the graka about the changes
-        self.shader.update(self.posWorld.get(), cam.get())
+        self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
                     
     def render(self):
         #draw!!!!
@@ -87,6 +94,44 @@ class Quad:
         self.mesh.draw()
             
           
+class Plane:
+    #we need three vectors to define a plane
+    def __init__(self, basis, v1, v2, h, v):
+
+        b = pyrr.Vector3(basis)
+        m = pyrr.Vector3(v1)
+        n = pyrr.Vector3(v2)
+                
+        #add horizontal lines
+        verticies = []
+        for hh in range(0,h+1):
+            x = [*((hh*m/h) )]
+            y = [*((hh*m/h) +n)]
+            verticies.extend(x)
+            verticies.extend(y)
+        
+
+        #add vertical lines
+        for vv in range(0,v+1):
+            x = [*((vv*n/v) )]
+            y = [*((vv*n/v) +m)]
+            verticies.extend(x)
+            verticies.extend(y)            
+        
+        self.posWorld = WorldModel(b)
+        self.shader = AShader(os.path.join('shaders','grid'))
+        self.grid = Grid(verticies)
+        
+        
+    def update(self, deltaT, frameCount, cam):
+        
+        #tell the graka about the changes
+        self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
+                    
+    def render(self):
+        #draw!!!!
+        self.shader.use()
+        self.grid.draw()
 
 
 class Cube:
@@ -178,5 +223,16 @@ class Cube:
         self.shader.use()
         self.tex.bind()
         self.mesh.draw()
-            
+
+
+
+
+
+
+
+
+
+
+
+
 

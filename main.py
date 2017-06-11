@@ -3,7 +3,7 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
-import obj, shader, movement
+from obj import *
 from display import *
 from camera import *
 
@@ -30,11 +30,11 @@ def main():
     #create cubes
     cubes = []
     for i in range(0,99):
-        c = obj.Cube()
+        c = Cube()
         c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
         c.posWorld.resize(random.random()*0.3)
         cubes.append(c)
-    c = obj.Cube()
+    c = Cube()
     cubes.append(c)
     
     #capture mouse
@@ -42,7 +42,7 @@ def main():
     pygame.event.get(pygame.MOUSEMOTION)
     pygame.mouse.set_visible(False)
     
-    
+    plane = Plane((-50,0,-50), (100,0,0), (0,0,100), 100, 100)
         
     while True:
         #start measuring how long this loop will take and clear the screen
@@ -50,7 +50,8 @@ def main():
 
         #all keyboard and mouse stuff goes there
         userInput(cam, dis)
-             
+        
+        
         ci = 0
         for c in cubes:
                 
@@ -58,13 +59,16 @@ def main():
             if not pygame.key.get_pressed()[K_r]:
                 c.posWorld.rotateRel(0.001*ci,0.001*ci,0.001*ci)
                 c.posWorld.setSize(.01*ci*(0.5+0.5*abs(math.sin(time.time()))))
-                #c.posWorld.moveRel(0,0.5,0)
+                #c.posWorld.moveRel(0.5,0.5,0.5)
 
         
         
             c.update(dis.deltaT, dis.frameCount, cam)
             c.render()
             ci += 1
+        
+        plane.update(dis.deltaT, dis.frameCount, cam)
+        plane.render()
         dis.flip()   
 
 def userInput(camera, display):

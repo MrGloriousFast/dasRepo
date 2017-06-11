@@ -6,7 +6,7 @@ class Camera():
 
         self.posWorld = posWorld
         #move back a little
-        self.posWorld.pos = [0,0,-10.]         
+        self.posWorld.pos = [0,-1,-10.]         
         #turn camaera to view 0,0,0,
         self.posWorld.rot = [0.,0.,0.]
 
@@ -46,8 +46,6 @@ class Camera():
         
     def sideward(self,distance):
         self.posWorld.moveRel(distance * self.speedMove, 0, 0)
-
-
 
     def turnRight(self,degree):
         self.posWorld.rotateRel(0, degree * self.speedTurn, 0)
