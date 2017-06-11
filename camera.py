@@ -21,6 +21,9 @@ class Camera():
         self.speedTurn = 1.
         self.speedMove = 10.   
         
+    def position(self):
+        return self.posWorld.get()
+        
     def view(self):
        #generate the world matrix
        #position

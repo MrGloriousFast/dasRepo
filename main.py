@@ -6,6 +6,7 @@ from OpenGL.GLU import *
 from obj import *
 from display import *
 from camera import *
+from manager import *
 
 def main():
 
@@ -27,15 +28,20 @@ def main():
 
     cam = Camera((dis.w, dis.h))
 
-    #create cubes
-    cubes = []
+    #create a group for cubes
+    shader = AShader(os.path.join('shaders','default'))
+    tex = Texture(os.path.join('res','cube.png'))
+    mesh = Mesh()
+    cubes = Group(shader, mesh, tex)
+
+    #create the cubes
     for i in range(0,99):
         c = Cube()
         c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
         c.posWorld.resize(random.random()*0.3)
-        cubes.append(c)
+        cubes.insert(c)
     c = Cube()
-    cubes.append(c)
+    cubes.insert(c)
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
@@ -43,7 +49,9 @@ def main():
     pygame.mouse.set_visible(False)
     
     plane = Plane((-500,0,-500), (1000,0,0), (0,0,1000), 100, 100)
-        
+    
+    print(mesh.verticies)
+    
     while True:
         #start measuring how long this loop will take and clear the screen
         dis.clear()
@@ -51,25 +59,15 @@ def main():
         #all keyboard and mouse stuff goes there
         userInput(cam, dis)
         
-        
-        ci = 0
-        for c in cubes:
-                
-            #whirl it around
-            if not pygame.key.get_pressed()[K_r]:
-                c.posWorld.rotateRel(0.001*ci,0.001*ci,0.001*ci)
-                c.posWorld.setSize(.01*ci*(0.5+0.5*abs(math.sin(time.time()))))
-                #c.posWorld.moveRel(0.5,0.5,0.5)
-
-        
-        
-            c.update(dis.deltaT, dis.frameCount, cam)
-            c.render()
-            ci += 1
+        cubes.updateShader(cam)
+        #cubes.updateBodies(dis.deltaT)        
+        cubes.draw()
         
         plane.update(dis.deltaT, dis.frameCount, cam)
         plane.render()
-        dis.flip()   
+
+        #finisht the frame
+        dis.flip()
 
 def userInput(camera, display):
     deltaT = display.deltaT

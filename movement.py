@@ -14,8 +14,14 @@ class WorldModel():
         self.pos = numpy.array(pos,dtype='float32') #pos in the world
         self.rot = numpy.array(rot,dtype='float32') #rot relative to itself
         self.scale = numpy.array(scale,dtype='float32') #relative to itself
-                
+
+        self.update()
+
     def get(self):
+    
+        return self.matWorld
+
+    def update(self):    
        #generate the world matrix
        #position
         pos   = pyrr.matrix44.create_from_translation(self.pos)
@@ -31,10 +37,8 @@ class WorldModel():
         scale = pyrr.matrix44.create_from_scale(self.scale)       
         
        #matWorld = pos * matRot * scale
-        matWorld = scale.dot(matRot).dot(pos)
+        self.matWorld = scale.dot(matRot).dot(pos)
         #matWorld = pos.dot(matRot).dot(scale) #definatly wrong!
-        
-        return matWorld
 
     #in world coord        
     def rotate(self, dx, dy, dz):
@@ -47,16 +51,19 @@ class WorldModel():
 
         self.rot += rotChange 
         self.limitRot()
+        self.update()
 
     
     #in world coord
     def move(self, dx, dy, dz): 
         self.pos = [self.pos[0]+dx, self.pos[1]+dy, self.pos[2]+dz]
+        self.update()
         
     #relative to direction
     def rotateRel(self, dx, dy, dz):
         self.rot = [self.rot[0]+dx, self.rot[1]+dy, self.rot[2]+dz]
         self.limitRot()
+        self.update()
 
     #relative to direction
     def moveRel(self, dx, dy, dz):
@@ -69,14 +76,17 @@ class WorldModel():
         #matRot = rotz * roty * rotz
         posChange = rotz.dot(roty).dot(rotx).dot( pyrr.Vector3([dx,dy,dz]) )
 
-        self.pos += posChange 
+        self.pos += posChange
+        self.update()
         
     #always scale into all directions with the same scalar
     def resize(self, scalar):
         self.scale = numpy.array([self.scale[0]*scalar, self.scale[1]*scalar, self.scale[2]*scalar],dtype='float32')
+        self.update()
 
     def setSize(self, size):
         self.scale = numpy.array([size, size, size],dtype='float32')
+        self.update()
 
     def limitRot(self):
         self.rot = [

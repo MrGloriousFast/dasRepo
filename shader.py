@@ -18,7 +18,8 @@ class AShader():
         self.shader = OpenGL.GL.shaders.compileProgram(self.s[0], self.s[1])
     
         glBindAttribLocation(self.program, 0, "inposition")
-        glBindAttribLocation(self.program, 1, "intexcord")        
+        glBindAttribLocation(self.program, 1, "intexcord")
+               
     
         glLinkProgram(self.program)
         glValidateProgram(self.program)

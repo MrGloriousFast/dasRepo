@@ -150,7 +150,8 @@ class Cube:
 
 
         #indicies we use to render the cube
-        index =  [0, 1, 2,#bottom
+        self.indicies =  [
+                  0, 1, 2,#bottom
                   2, 3, 0, 
                   0, 1, 5,#front
                   5, 4, 0,
@@ -163,9 +164,9 @@ class Cube:
                   4, 5, 6,#top
                   6, 7, 4]
 
-        v=[] #vertex array
-        for i in index:
-            v.extend(vList[i])
+        self.verticies=[] #vertex array
+        for i in self.indicies:
+            self.verticies.extend(vList[i])
 
         
         #construct the cube, an array of 36 vertices
@@ -173,7 +174,7 @@ class Cube:
         #image is 192x32 = (6x1)*32 pixel
         s = 1./6.
         #we have to give each triangle three texture coords        
-        t = [#1
+        self.texcords = [#1
             0,0,  s,0, s,1,
             s,1,  0,1, 0,0,
             
@@ -196,33 +197,14 @@ class Cube:
             #6
             5*s,0,  6*s,0, 6*s,1,
             6*s,1,  5*s,1, 5*s,0,]
-
-        index = []
-        for i in range(0,36):
-            index.append(i)
-
-        #make the mesh
-        self.mesh = Mesh(v, t, index)
-        
-        #load our shader and use it
-        self.shader = AShader(os.path.join('shaders','default'))
-        
-        #use a texture
-        self.tex = Texture(os.path.join('res','cube.png'))
         
         #world position
         self.posWorld = WorldModel()
                     
-    def update(self, deltaT, frameCount, cam):
-        
-        #tell the graka about the changes
-        self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
-                    
-    def render(self):
-        #draw!!!!
-        self.shader.use()
-        self.tex.bind()
-        self.mesh.draw()
+    def update(self, deltaT, counter):
+        self.posWorld.rotateRel(0.001*counter,0.001*counter,0.001*counter)
+        self.posWorld.setSize(.01*(0.5+0.5*abs(math.sin(time.time()))))
+
 
 
 
