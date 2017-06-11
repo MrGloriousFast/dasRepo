@@ -42,7 +42,7 @@ def main():
     pygame.event.get(pygame.MOUSEMOTION)
     pygame.mouse.set_visible(False)
     
-    plane = Plane((-50,0,-50), (100,0,0), (0,0,100), 100, 100)
+    plane = Plane((-500,0,-500), (1000,0,0), (0,0,1000), 100, 100)
         
     while True:
         #start measuring how long this loop will take and clear the screen
