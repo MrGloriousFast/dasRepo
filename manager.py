@@ -19,14 +19,31 @@ class Group():
         
     def insert(self, body):
         self.bodies.append(body)
-        self.mesh.extend(body.verticies, body.texcords, body.indicies)
+        print(body.posWorld.get())
+        self.mesh.extend(body.verticies, body.texcords, body.posWorld.get(), body.indicies)
+        
+    def extend(self, bodies):
+        self.bodies.extend(bodies)
+        v=[]
+        t=[]
+        i=[]
+        p=[]
+
+
+        for body in bodies:
+            v.extend(body.verticies)
+            t.extend(body.texcords)
+            i.extend(body.indicies)
+            p.extend(body.posWorld.get())
+            
+        self.mesh.extend(v,t,p,i)
+        
         
     def updateShader(self, cam):
-        v = cam.view()
-        p = cam.projection()
+        self.shader.use()
+        self.shader.updateCam(cam)
         for b in self.bodies:
-            #print(b.posWorld.get())
-            self.shader.update(b.posWorld.get(), v, p)
+            self.shader.updatePos(b.posWorld.get())
         
     def updateBodies(self, deltaT):
         counter = 0

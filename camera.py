@@ -41,6 +41,11 @@ class Camera():
     def projection(self):
         return self.perspective     
         
+    def viewProjection(self):
+        v = self.view()
+        p = self.perspective
+        return v.dot(p)
+        
     def forward(self, distance):
         self.posWorld.moveRel(0,0, distance * self.speedMove)
         

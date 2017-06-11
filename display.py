@@ -4,6 +4,9 @@ from OpenGL.GL import *
 from OpenGL.GL.shaders import *
 from OpenGL.GLU import *
 
+def getTime():
+    return  time.perf_counter()
+
 class Display():
     def __init__(self, width, height, fps = 30, title = "TITLE", clearColor = (0.0, 0.0, 0.05, 0.0)):
         pygame.display.init()
@@ -13,7 +16,7 @@ class Display():
         self.h = height
 
         self.fps = fps
-        self.deltaT = float(1000/fps)#just a good guess for the first loop
+        self.deltaT = float(1000./fps)#just a good guess for the first loop
 
         self.frameCount = 0
         self.frameCountOld = 0
@@ -27,16 +30,16 @@ class Display():
     
     def getActualFps(self):
 
-        if (time.time() > 5+self.frameCountTimer):
+        if (getTime() > 5+self.frameCountTimer):
             #update timer
-            delta = time.time() - self.frameCountTimer
-            self.frameCountTimer = time.time()
+            delta = getTime() - self.frameCountTimer
+            self.frameCountTimer = getTime()
             #
             print("fps: ", (self.frameCount - self.frameCountOld)/delta)
             self.frameCountOld = self.frameCount
    
     def clear(self):
-        self.start = time.time()
+        self.start = getTime()
 
         #make the screen blank
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
@@ -45,18 +48,22 @@ class Display():
  
         self.frameCount +=1
         
-        self.getActualFps()
+
         
         #FPS and deltaT calculation
         pygame.display.flip()
-        self.end = time.time()
+        self.end = getTime()
         self.deltaT = self.end - self.start
-        waittime = int(1000/self.fps - self.deltaT)
-        if(waittime > 0):
-            pygame.time.wait(waittime)
+        waittime = int(1000./self.fps - self.deltaT)
+        if(waittime > 1):
+            
+            #time.sleep(waittime/1000.)
+            time.sleep(0.001)
         else:
             #always wait at least one millisec
-            pygame.time.wait(1)
+            time.sleep(0.001)
+        self.getActualFps()
+
         
     def polygonMode(self, mode):
         if mode == 'line':

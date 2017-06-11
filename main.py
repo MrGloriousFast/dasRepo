@@ -24,7 +24,7 @@ def main():
     """
 
     #x, y, fps
-    dis = Display(800, 600, 60, "evil engine #9")
+    dis = Display(800, 600, 120, "evil engine #9")
 
     cam = Camera((dis.w, dis.h))
 
@@ -35,13 +35,15 @@ def main():
     cubes = Group(shader, mesh, tex)
 
     #create the cubes
-    for i in range(0,99):
+    temp = []
+    for i in range(0,100):
         c = Cube()
         c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
         c.posWorld.resize(random.random()*0.3)
-        cubes.insert(c)
+        temp.append(c)
     c = Cube()
     cubes.insert(c)
+    cubes.extend(temp)
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
@@ -49,9 +51,7 @@ def main():
     pygame.mouse.set_visible(False)
     
     plane = Plane((-500,0,-500), (1000,0,0), (0,0,1000), 100, 100)
-    
-    print(mesh.verticies)
-    
+        
     while True:
         #start measuring how long this loop will take and clear the screen
         dis.clear()
@@ -63,7 +63,7 @@ def main():
         #cubes.updateBodies(dis.deltaT)        
         cubes.draw()
         
-        plane.update(dis.deltaT, dis.frameCount, cam)
+        plane.update(dis.deltaT, cam)
         plane.render()
 
         #finisht the frame
@@ -96,8 +96,8 @@ def userInput(camera, display):
             #capture mouse
             pygame.mouse.set_pos(display.w/2., display.w/2)
             pygame.event.get(pygame.MOUSEMOTION) #steal the new mouse event and do nothing with it to reset it
-            print()
-            print(camera.posWorld.getString())
+            #print()
+            #print(camera.posWorld.getString())
             #print(camera.view())
 
     #back forth

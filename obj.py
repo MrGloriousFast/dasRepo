@@ -123,10 +123,12 @@ class Plane:
         self.grid = Grid(verticies)
         
         
-    def update(self, deltaT, frameCount, cam):
-        
+    def update(self, deltaT, cam):
         #tell the graka about the changes
-        self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
+        self.shader.use()
+        self.shader.updatePos(self.posWorld.get())
+        self.shader.updateCam(cam)
+
                     
     def render(self):
         #draw!!!!

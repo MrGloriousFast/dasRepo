@@ -10,10 +10,6 @@ class Grid():
         self.verticies = numpy.array(verticies,dtype='float16')
         self.vSize = 2 #bytes per elemnt in an array
 
-
-        
-    def draw(self):
-    
         #vertix buffer object for position
         self.VBO = glGenBuffers(1)
         glBindBuffer(GL_ARRAY_BUFFER, self.VBO)
@@ -23,5 +19,9 @@ class Grid():
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
        
+        
+    def draw(self):
+        glBindBuffer(GL_ARRAY_BUFFER, self.VBO)
+        glVertexAttribPointer(0, 3, GL_HALF_FLOAT, GL_FALSE, 0, ctypes.c_void_p(0))
         glDrawArrays(GL_LINES, 0, self.verticies.shape[0])
 
