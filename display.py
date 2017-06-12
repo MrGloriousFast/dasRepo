@@ -8,7 +8,7 @@ def getTime():
     return  time.perf_counter()
 
 class Display():
-    def __init__(self, width, height, fps = 30, title = "TITLE", clearColor = (0.0, 0.0, 0.05, 0.0)):
+    def __init__(self, width, height, title = "TITLE", fps = 30, clearColor = (0.0, 0.0, 0.05, 0.0)):
         pygame.display.init()
         pygame.display.set_caption(title)
 

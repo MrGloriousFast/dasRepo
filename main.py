@@ -24,7 +24,7 @@ def main():
     """
 
     #x, y, fps
-    dis = Display(800, 600, 120, "evil engine #9")
+    dis = Display(800, 600, "evil engine #9")
 
     cam = Camera((dis.w, dis.h))
 
@@ -36,14 +36,15 @@ def main():
 
     #create the cubes
     temp = []
-    for i in range(0,100):
+    for i in range(0,0):
         c = Cube()
         c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
         c.posWorld.resize(random.random()*0.3)
         temp.append(c)
+    #cubes.extend(temp)
     c = Cube()
     cubes.insert(c)
-    cubes.extend(temp)
+
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
@@ -65,6 +66,11 @@ def main():
         
         plane.update(dis.deltaT, cam)
         plane.render()
+
+        #for profiling we will end after a few seconds
+        if time.process_time() > 60000:
+            pygame.quit()
+            quit()
 
         #finisht the frame
         dis.flip()
