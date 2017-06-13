@@ -19,7 +19,7 @@ class Camera():
 
 
         self.speedTurn = 1.
-        self.speedMove = 10.   
+        self.speedMove = 100.   
         
     def position(self):
         return self.posWorld.get()

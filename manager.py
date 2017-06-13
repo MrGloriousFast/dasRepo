@@ -19,14 +19,15 @@ class Group():
         
     def insert(self, body):
         self.bodies.append(body)
-        print("orig:")
-        print(body.posWorld.get())
-        print()
-        t =[]
+        #print("orig:")
+        #print(body.posWorld.get())
+        #print()
+        temp =[]
         for i in body.posWorld.get():
-            t.extend(i)
+            temp.append(i)
+            #print("temp", temp)
 
-        self.mesh.extend(body.verticies, body.texcords, t, body.indicies)
+        self.mesh.extend(body.verticies, body.texcords, temp, body.indicies)
         
         
     def extend(self, bodies):
@@ -59,7 +60,6 @@ class Group():
             counter += 1
             
     def draw(self):
-
         self.shader.use()
         self.texture.bind()
         self.mesh.draw()

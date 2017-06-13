@@ -30,7 +30,7 @@ class Display():
     
     def getActualFps(self):
 
-        if (getTime() > 5+self.frameCountTimer):
+        if (getTime() > 2+self.frameCountTimer):
             #update timer
             delta = getTime() - self.frameCountTimer
             self.frameCountTimer = getTime()

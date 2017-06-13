@@ -36,7 +36,7 @@ def main():
 
     #create the cubes
     temp = []
-    for i in range(0,0):
+    for i in range(0,100):
         c = Cube()
         c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
         c.posWorld.resize(random.random()*0.3)

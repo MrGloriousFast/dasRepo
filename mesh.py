@@ -43,18 +43,24 @@ class Mesh():
         
         print('input')
         print(pos)
-        print()
+        print("*pos", *pos)
+        
+        pos2 = []
+        for i in [*pos]:
+            pos2.extend(i)
+        print("pos2", pos2)
+
 
         #make a new buffer with the added information
         #arrays that we will give the graka
         self.verticies = numpy.array([*self.verticies,*verticies],dtype='float16')
         self.texCords  = numpy.array([*self.texCords,*texCords],dtype='float16')
         self.indicies  = numpy.array([*self.indicies,*indicies],dtype='uint8')
-        self.pos       = numpy.array([*self.pos, *pos],dtype = 'float16')   
+        self.pos       = numpy.array([*self.pos, *pos2],dtype = 'float16')   
 
-        print('extended:')
-        print(self.pos)
-        print('size',self.pos.shape[0])
+        #print('extended:')
+        #print(self.pos)
+        #print('size',self.pos.shape[0])
         
         self.create()
        
@@ -74,6 +80,7 @@ class Mesh():
         glEnableVertexAttribArray(1)
         
 
+        print("self.pos.shape[0]", self.pos.shape[0])
         #p0
         glBindBuffer(GL_ARRAY_BUFFER,self.bufferPos)
         glBufferData(GL_ARRAY_BUFFER,self.pos.shape[0]*self.pSize, self.pos, GL_STATIC_DRAW)    
@@ -97,16 +104,16 @@ class Mesh():
         
         #vertix buffer object for worldModel position
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferPos)
-        glVertexAttribPointer(2, 4, GL_HALF_FLOAT, GL_FALSE, 4*self.pSize, ctypes.c_void_p(0))
+        glVertexAttribPointer(2, 4, GL_HALF_FLOAT, GL_FALSE, 16*self.pSize, ctypes.c_void_p(0))
         
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferPos)
-        glVertexAttribPointer(3, 4, GL_HALF_FLOAT, GL_FALSE, 4*self.pSize, ctypes.c_void_p(4*self.pSize))
+        glVertexAttribPointer(3, 4, GL_HALF_FLOAT, GL_FALSE, 16*self.pSize, ctypes.c_void_p(8))
 
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferPos)
-        glVertexAttribPointer(4, 4, GL_HALF_FLOAT, GL_FALSE, 4*self.pSize, ctypes.c_void_p(2*4*self.pSize))
+        glVertexAttribPointer(4, 4, GL_HALF_FLOAT, GL_FALSE, 16*self.pSize, ctypes.c_void_p(4*2*self.pSize))
         
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferPos)
-        glVertexAttribPointer(5, 4, GL_HALF_FLOAT, GL_FALSE, 4*self.pSize, ctypes.c_void_p(3*4*self.pSize))                        
+        glVertexAttribPointer(5, 4, GL_HALF_FLOAT, GL_FALSE, 16*self.pSize, ctypes.c_void_p(4*3*self.pSize))                        
 
         #glDrawElements(GL_TRIANGLES, self.indicies.shape[0], GL_UNSIGNED_BYTE, ctypes.c_void_p(0))
         #glDrawElements(GL_TRIANGLES, self.indicies.shape[0], GL_UNSIGNED_SHORT, ctypes.c_void_p(0))
