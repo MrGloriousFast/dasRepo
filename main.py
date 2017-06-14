@@ -7,8 +7,7 @@ from obj import *
 from display import *
 from camera import *
 from manager import *
-
-from threading import Thread
+from instance import *
 
 def main():
 
@@ -34,27 +33,16 @@ def main():
     shader = AShader(os.path.join('shaders','default'))
     tex = Texture(os.path.join('res','cube.png'))
     mesh = Mesh()
-    cubes = Group(shader, mesh, tex)
+    c = Cube() # we use this as a blue print for all other cubes
+    cubes = Instances(c.verticies, c.texcords, c.verticies, shader, tex)
 
-    #create the cubes
-    temp = []
-    for i in range(0,500):
-        c = Cube()
-        c.posWorld.move((random.random()-0.5)*500.,(random.random()-0.5)*10.,(random.random()-0.5)*500.)
-        c.posWorld.resize(random.random()*random.random()*10.0)
-        temp.append(c)
-    cubes.insertAll(temp)
-    c = Cube()
-    cubes.insert(c)
-
-    #create a skybox
-    shader = AShader(os.path.join('shaders','default'))
-    tex = Texture(os.path.join('res','sky.png'))
-    mesh = Mesh()
-    skybox = Group(shader, mesh, tex)
-    s = Cube()
-    s.posWorld.resize(1000)
-    skybox.insert(s)
+    #create more cubes
+    for i in range(0, 10000):
+        p = WorldModel()
+        p.move((random.random()-0.5)*500.,(random.random()-0.5)*10.,(random.random()-0.5)*500.)
+        p.resize(random.random()*random.random()*10.0)
+        cubes.append(p)
+    cubes.createBuffer_pos()
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
@@ -62,7 +50,7 @@ def main():
     pygame.mouse.set_visible(False)
     
     #create a plane
-    plane = Plane((-500,0,-500), (1000,0,0), (0,0,1000), 100, 100)
+    #plane = Plane((-500,0,-500), (1000,0,0), (0,0,1000), 100, 100)
         
     while True:
         #start measuring how long this loop will take and clear the screen
@@ -75,11 +63,9 @@ def main():
         #cubes.updateBodies(dis.deltaT)# very expensive for cpu!!    
         cubes.render()
         
-        plane.update(dis.deltaT, cam)
-        plane.render()
-        
-        skybox.updateShader(cam)
-        skybox.render()
+        #plane.update(dis.deltaT, cam)
+        #plane.render()
+
 
         #for profiling we will end after a few seconds
         if time.process_time() > 60000:

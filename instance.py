@@ -5,23 +5,39 @@ from shader import AShader
 from movement import *
 import numpy as np
 
+def mat_to_array(mat):
+    temp = []
+    for i in mat:
+        for j in i.get():
+            temp.extend(j)
+
+    return temp
+
 class Instances:
-    def __init__(self, verticies, texcords, normals, shader):
+    def __init__(self, verticies, texcords, normals, shader, texture):
         #everyhting they share
-        self.vertices = vertices
-        self.texcords = texcords
-        self.normals  = normals
-        self.shader   = shader
+        self.verticies = verticies
+        self.texcords  = texcords
+        self.normals   = normals
+        self.shader    = shader
+        self.texture   = texture
 
         #all world positions, empty in init
         self.inst_pos = []
         self.instances = 0
+    
+        #create all static buffers
+        self.createBuffer()
+
 
     #add another instance
     def append(self, worldpos):
         self.inst_pos.append(worldpos)
         self.instances += 1
     
+    def updateShader(self, cam):
+        self.shader.use()
+        self.shader.updateCam(cam)
     
     """
     buffer for static data
@@ -37,11 +53,11 @@ class Instances:
         
         #sort the data
         interleaved = []
-        for ii in range(0,int(self.vertices.shape[0]/3)):
+        for i in range(0,int(len(self.verticies)/3)):
             #all three vertex floats afet each other
-            interleaved.append(self.vertices[i*3])
-            interleaved.append(self.vertices[i*3+1])
-            interleaved.append(self.vertices[i*3+2])
+            interleaved.append(self.verticies[i*3])
+            interleaved.append(self.verticies[i*3+1])
+            interleaved.append(self.verticies[i*3+2])
             #all two texture coords after each other
             interleaved.append(self.texcords[i*2])
             interleaved.append(self.texcords[i*2+1])
@@ -54,8 +70,8 @@ class Instances:
         inter = np.array(interleaved, dtype="float32")
         self.size = 4 #bytes  
 
-        print("inter.shape[0]", inter.shape[0])
-        print("divided by 8:", inter.shape[0]/8)
+        #print("inter.shape[0]", inter.shape[0])
+        #print("divided by 8:", inter.shape[0]/8)
 
         #fill the buffer
         glBufferData(GL_ARRAY_BUFFER, self.size*inter.shape[0], inter, GL_STATIC_DRAW)
@@ -72,7 +88,7 @@ class Instances:
         glEnableVertexAttribArray(2) 
 
         #unbind it, i dont know why, just do it
-        glBindBuffer(GL_ARRAY_BUFFER, ctypes.c_void_p(0))
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 
 
@@ -92,22 +108,27 @@ class Instances:
         self.buffer_step_pos = self.size*16
 
         #we have to break up the mat4 into 4 vectors
-        print(self.inst_pos)
         interleaved = []
-        for pos in self.inst_pos:
-            for c in range(0,4)         
-                #column vector
-                interleaved.append(pos[0+c])
-                interleaved.append(pos[4+c])
-                interleaved.append(pos[8+c])
-                interleaved.append(pos[12+c])        
-                
+        pos = mat_to_array(self.inst_pos) 
+        
+        #print()
+        #print(self.inst_pos[0].get())
+        
+               
+        for i in range(0,int(len(pos))):
+            #column vector
+            interleaved.append(pos[i])
+        
+
+        #print(interleaved)
+
+
         #make this list so that openGl can read it
         inter = np.array(interleaved, dtype="float32")
         self.size = 4 #bytes  
 
-        print("inter.shape[0] POS", inter.shape[0])
-        print("divided by 16:", inter.shape[0]/16)
+        #print("inter.shape[0] POS", inter.shape[0])
+        #print("divided by 16:", inter.shape[0]/16)
 
         #fill the buffer
         glBufferData(GL_ARRAY_BUFFER, self.size*inter.shape[0], inter, GL_DYNAMIC_DRAW) #might be changed to even more dynamic changes
@@ -118,15 +139,16 @@ class Instances:
         glEnableVertexAttribArray(6) 
 
         #unbind it, i dont know why, just do it
-        glBindBuffer(GL_ARRAY_BUFFER, ctypes.c_void_p(0))
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     def delete(self):
         glDeleteBuffers(1, self.buffer)
 
 
     def bind(self):
-        #make sure we use the correct shader
+        #make sure we use the correct shader and texture
         self.shader.use()
+        self.texture.bind()
 
         """ STATIC MODEL """    
         glBindBuffer(GL_ARRAY_BUFFER, self.buffer)
@@ -179,14 +201,14 @@ class Instances:
         self.bind()
         
         #draw ett!
-        mode = GL_TRIANGLES
-        first = ctypes.c_void_p(0))
-        count = ctypes.c_void_p(len(self.vertices))
-        primcount = ctypes.c_void_p(self.instances)
-        glDrawArraysInstanced(mode, first, count, primcount)
+        #mode = GL_TRIANGLES
+        first = 0
+        count = len(self.verticies)
+        primcount = self.instances
+        glDrawArraysInstanced(GL_TRIANGLES, first, count, primcount)
         
         #unbind it, i dont know why, just do it
-        glBindBuffer(GL_ARRAY_BUFFER, ctypes.c_void_p(0))
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
 
         
         
