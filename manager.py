@@ -18,20 +18,23 @@ class Group():
         
     def insert(self, body):
         self.bodies.append(body)
-        self.mesh.insert(body.verticies, body.texcords)
+        self.mesh.insert(body.verticies, body.texcords, body.posWorld.get())
         
     #same as above but for many at once
     def insertAll(self, bodies):
         self.bodies.extend(bodies)
         v=[]
         t=[]
-
+        m=[]
 
         for body in bodies:
             v.extend(body.verticies)
             t.extend(body.texcords)
+            m.extend(body.posWorld.get())
 
-        self.mesh.insert(v,t)
+        #print(m)
+
+        self.mesh.insert(v, t, m)
         
         
     def updateShader(self, cam):
@@ -46,14 +49,14 @@ class Group():
             counter += 1
 
             
-    def draw(self):
+    def render(self):
         self.shader.use()
         self.texture.bind()
         self.mesh.bind()
-
-        for b in self.bodies:
-            self.shader.updatePos(b.posWorld.get())
-            b.mesh.render()
+        self.mesh.render()
+#        for b in self.bodies:
+            #self.shader.updatePos(b.posWorld.get())
+            #b.mesh.render()
 
 
 

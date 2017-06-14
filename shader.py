@@ -19,10 +19,11 @@ class AShader():
     
         glBindAttribLocation(self.program, 0, "inposition")
         glBindAttribLocation(self.program, 1, "intexcord")
-        glBindAttribLocation(self.program, 2, "p0")
-        glBindAttribLocation(self.program, 3, "p1")
-        glBindAttribLocation(self.program, 4, "p2")
-        glBindAttribLocation(self.program, 5, "p3")
+        glBindAttribLocation(self.program, 1, "normal")
+        glBindAttribLocation(self.program, 3, "c0")
+        glBindAttribLocation(self.program, 4, "c1")
+        glBindAttribLocation(self.program, 5, "c2")
+        glBindAttribLocation(self.program, 6, "c3")
 
         glLinkProgram(self.program)
         glValidateProgram(self.program)
@@ -30,20 +31,12 @@ class AShader():
         #uniform array
         #uniforms are global variables for the graka
         self.uniforms = []
-        self.uniforms.append(glGetUniformLocation(self.program, "worldmodel"))
         self.uniforms.append(glGetUniformLocation(self.program, "camera"))
 
     def updateCam(self, cam):
-        glUniformMatrix4fv(self.uniforms[1], 1, GL_FALSE, cam.viewProjection()) 
+        glUniformMatrix4fv(self.uniforms[0], 1, GL_FALSE, cam.viewProjection()) 
 
     
-         
-    def updatePos(self, worldmodel):
-        #0 -> first uniform we have, aka worldposition
-        #1 -> how many uniforms we send in
-        #GL_FALSE -> you wanna transpose the matrix?
-        glUniformMatrix4fv(self.uniforms[0], 1, GL_FALSE, worldmodel)
-
     #openGl use this shader!
     def use(self):
         glUseProgram(self.program)
@@ -63,8 +56,6 @@ class AShader():
 
         #compile shader
         shader = OpenGL.GL.shaders.compileShader(text,shaderType)
-
-
         return shader
     
     #could be useful but i dont know how to make it yet

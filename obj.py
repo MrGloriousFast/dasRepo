@@ -206,8 +206,8 @@ class Cube:
         #world position
         self.posWorld = WorldModel()
         #if you have many cubes you should use the Group render
-        self.mesh = Mesh()
-        self.mesh.insert(self.verticies, self.texcords)
+        #self.mesh = Mesh()
+        #self.mesh.insert(self.verticies, self.texcords, self.posWorld.get())
                     
     def update(self, deltaT, counter):
         self.posWorld.rotateRel(0.001*counter,0.001*counter,0.001*counter)

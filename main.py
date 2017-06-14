@@ -73,13 +73,13 @@ def main():
         
         cubes.updateShader(cam)
         #cubes.updateBodies(dis.deltaT)# very expensive for cpu!!    
-        cubes.draw()
+        cubes.render()
         
         plane.update(dis.deltaT, cam)
         plane.render()
         
         skybox.updateShader(cam)
-        skybox.draw()
+        skybox.render()
 
         #for profiling we will end after a few seconds
         if time.process_time() > 60000:
