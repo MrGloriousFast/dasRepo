@@ -6,7 +6,6 @@ from OpenGL.GLU import *
 from obj import *
 from display import *
 from camera import *
-from manager import *
 from instance import *
 
 
@@ -33,7 +32,6 @@ def main():
     #create a group for cubes
     shader = AShader(os.path.join('shaders','default'))
     tex = Texture(os.path.join('res','sky.png'))
-    mesh = Mesh()
     c = Cube() # we use this as a blue print for all other cubes
     cubes = Instances(c.verticies, c.texcords, c.verticies, shader, tex)
 

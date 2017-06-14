@@ -2,7 +2,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from texture import *
 from shader import AShader
-from movement import *
 import numpy as np
 
 def mat_to_array(mat):

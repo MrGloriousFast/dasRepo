@@ -6,7 +6,6 @@ from OpenGL.GLU import *
 from PIL import Image
 from texture import *
 from shader import AShader
-from mesh import *
 from movement import *
 from grid import *
 
@@ -38,7 +37,7 @@ class Quad:
         #the triangle as an array of vertices
         #pos(x,y,z)
         #texCord(x,y)
-        v = [ -0.5, -0.5 ,  0.0,
+        self.verticies = [ -0.5, -0.5 ,  0.0,
                0.5, -0.5 ,  0.0,
                0.5,  0.5 ,  0.0,
                
@@ -46,7 +45,7 @@ class Quad:
               -0.5,  0.5 ,  0.0,
               -0.5, -0.5 ,  0.0]
                
-        t =[  0.0,  0.0,
+        self.texcords =[  0.0,  0.0,
               1.0,  0.0,
               1.0,  1.0,
               
@@ -56,28 +55,12 @@ class Quad:
         
         i = [0,1,2,
              2,3,0]
-        #make the mesh
-        self.mesh = Mesh(v, t, i)
-        
-        #load our shader and use it
-        self.shader = AShader(os.path.join('shaders','default'))
-        
-        #use a texture
-        self.tex = Texture(os.path.join('res','awesomeface.png'))
-        
-        #world position
-        self.posWorld = WorldModel()
-                    
+
     def update(self, deltaT, frameCount, cam):
         
         #tell the graka about the changes
         self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
                     
-    def render(self):
-        #draw!!!!
-        self.shader.use()
-        self.tex.bind()
-        self.mesh.draw()
             
           
 class Plane:
