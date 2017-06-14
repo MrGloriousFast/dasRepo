@@ -39,7 +39,7 @@ def main():
     #create more cubes
     for i in range(0, 10000):
         p = WorldModel()
-        p.move((random.random()-0.5)*500.,(random.random()-0.5)*10.,(random.random()-0.5)*500.)
+        p.move((random.random()-0.5)*500.,(random.random()-0.5)*500.,(random.random()-0.5)*500.)
         p.resize(random.random()*random.random()*10.0)
         cubes.append(p)
     cubes.createBuffer_pos()
