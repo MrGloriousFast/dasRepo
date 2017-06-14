@@ -33,7 +33,6 @@ class AShader():
         self.uniforms.append(glGetUniformLocation(self.program, "worldmodel"))
         self.uniforms.append(glGetUniformLocation(self.program, "camera"))
 
-
     def updateCam(self, cam):
         glUniformMatrix4fv(self.uniforms[1], 1, GL_FALSE, cam.viewProjection()) 
 

@@ -176,41 +176,45 @@ class Cube:
         #image is 192x32 = (6x1)*32 pixel
         s = 1./6.
         #we have to give each triangle three texture coords        
-        self.texcords = [#1
-            0,0,  s,0, s,1,
-            s,1,  0,1, 0,0,
-            
+        self.texcords = [
+
             #2
             s,0,2*s,0,2*s,1,
             2*s,1,  s,1, s,0,
-            
-            #3
-            2*s,0,  3*s,0, 3*s,1,
-            3*s,1,  2*s,1, 2*s,0,
-            
-            #4
-            3*s,0,  4*s,0, 4*s,1,
-            4*s,1,  3*s,1, 3*s,0,
-            
+
             #5
-            4*s,0,  5*s,0, 5*s,1,
-            5*s,1,  4*s,1, 4*s,0,
+            4*s,1,  5*s,1, 5*s,0,
+            5*s,0,  4*s,0, 4*s,1,
+                        
+            #3
+            2*s,0,  2*s,1, 3*s,1,
+            3*s,1,  3*s,0, 2*s,0,
             
             #6
-            5*s,0,  6*s,0, 6*s,1,
-            6*s,1,  5*s,1, 5*s,0,]
+            6*s,0,  5*s,0, 5*s,1,
+            5*s,1,  6*s,1, 6*s,0,
+
+            #1
+            s,1,  s,0, 0,0,
+            0,0,  0,1, s,1,
+
+            #4
+            4*s,0,  3*s,0, 3*s,1,
+            3*s,1,  4*s,1, 4*s,0]
+
         
         #world position
         self.posWorld = WorldModel()
         #if you have many cubes you should use the Group render
-        #self.mesh = Mesh()
-        #self.mesh.extend(self.verticies, self.texcords)
+        self.mesh = Mesh()
+        self.mesh.insert(self.verticies, self.texcords)
                     
     def update(self, deltaT, counter):
         self.posWorld.rotateRel(0.001*counter,0.001*counter,0.001*counter)
         self.posWorld.setSize(.01*(0.5+0.5*abs(math.sin(time.time()))))
 
-
+    def render(self):
+        self.mesh.render()
 
 
 

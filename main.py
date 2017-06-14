@@ -30,27 +30,32 @@ def main():
 
     #create a group for cubes
     shader = AShader(os.path.join('shaders','default'))
-    tex = Texture(os.path.join('res','cube.png'))
+    tex = Texture(os.path.join('res','sky.png'))
     mesh = Mesh()
     cubes = Group(shader, mesh, tex)
 
     #create the cubes
     temp = []
-    for i in range(0,100):
+    for i in range(0,200):
         c = Cube()
-        c.posWorld.move((random.random()-0.5)*100.,(random.random()-0.5)*10.,(random.random()-0.5)*100.)
-        c.posWorld.resize(random.random()*0.3)
+        c.posWorld.move((random.random()-0.5)*500.,(random.random()-0.5)*10.,(random.random()-0.5)*500.)
+        c.posWorld.resize(random.random()*random.random()*10.0)
         temp.append(c)
-    #cubes.extend(temp)
+    cubes.insertAll(temp)
     c = Cube()
     cubes.insert(c)
 
+    #create a skybox
+    skybox = Cube()
+    skybox.posWorld.resize(1000)
+    cubes.insert(skybox)
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
     pygame.event.get(pygame.MOUSEMOTION)
     pygame.mouse.set_visible(False)
     
+    #create a plane
     plane = Plane((-500,0,-500), (1000,0,0), (0,0,1000), 100, 100)
         
     while True:

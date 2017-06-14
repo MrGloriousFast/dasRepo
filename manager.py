@@ -1,4 +1,3 @@
-
 import pygame,math, numpy, random, time
 from pygame.locals import *
 from OpenGL.GL import *
@@ -19,50 +18,41 @@ class Group():
         
     def insert(self, body):
         self.bodies.append(body)
-        #print("orig:")
-        #print(body.posWorld.get())
-        #print()
-        temp =[]
-        for i in body.posWorld.get():
-            temp.append(i)
-            #print("temp", temp)
-
-        self.mesh.extend(body.verticies, body.texcords, temp, body.indicies)
+        self.mesh.insert(body.verticies, body.texcords)
         
-        
-    def extend(self, bodies):
+    #same as above but for many at once
+    def insertAll(self, bodies):
         self.bodies.extend(bodies)
         v=[]
         t=[]
-        i=[]
-        p=[]
 
 
         for body in bodies:
             v.extend(body.verticies)
             t.extend(body.texcords)
-            i.extend(body.indicies)
-            p.extend(body.posWorld.get())
-            
-        self.mesh.extend(v,t,p,i)
+
+        self.mesh.insert(v,t)
         
         
     def updateShader(self, cam):
         self.shader.use()
         self.shader.updateCam(cam)
-        #for b in self.bodies:
-            #self.shader.updatePos(b.posWorld.get())
-        
+
+
     def updateBodies(self, deltaT):
         counter = 0
         for b in self.bodies:
             b.update(deltaT, counter)
             counter += 1
+
             
     def draw(self):
         self.shader.use()
         self.texture.bind()
-        self.mesh.draw()
+
+        for b in self.bodies:
+            b.render()
+            self.shader.updatePos(b.posWorld.get())
         
 
 

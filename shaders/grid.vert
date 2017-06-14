@@ -1,4 +1,4 @@
-#version 130
+#version 330
 in vec3 inposition; //vertex position in modelspace
 
 uniform mat4 worldmodel; //vertexposistion in world space
