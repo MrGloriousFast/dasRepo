@@ -38,22 +38,21 @@ class Display():
  
         self.frameCount +=1
         
-
+        self.getActualFps()
         
         #FPS and deltaT calculation
         pygame.display.flip()
-        self.end = getTime()
-        self.deltaT = self.end - self.start
-        waittime = int(1000./self.fps - self.deltaT)
-#        if(waittime > 1):
+        self.end_wait = getTime()
+        deltaT_wait = self.end_wait - self.start
+        waittime = (1000./self.fps - self.deltaT)-1.5
+        if(waittime > 1):
             
-            #time.sleep(waittime/1000.)
-            #time.sleep(0.001)
-#        else:
+            time.sleep(waittime/1000.)
+        else:
             #always wait at least one millisec
-            #time.sleep(0.001)
-        time.sleep(0.0001)
-        self.getActualFps()
+            time.sleep(1)
+        #time.sleep(0.001)
+        self.deltaT = getTime() - self.start
 
     def getActualFps(self):
 
@@ -62,7 +61,7 @@ class Display():
             delta = getTime() - self.frameCountTimer
             self.frameCountTimer = getTime()
             #
-            print("fps: ", str((self.frameCount - self.frameCountOld)/delta)[0:3])
+            print("fps: ", str((self.frameCount - self.frameCountOld)/delta)[0:3],"deltaT:" ,str(self.deltaT*1000)[0:4], "ms")
             self.frameCountOld = self.frameCount
 
         

@@ -18,7 +18,7 @@ class Camera():
         self.perspective =  pyrr.matrix44.create_perspective_projection_matrix(fov, aspect[0]/aspect[1], zNear, zFar, dtype='float32')
 
 
-        self.speedTurn = 1.
+        self.speedTurn = 0.1
         self.speedMove = 100.   
         
     def position(self):
@@ -46,14 +46,14 @@ class Camera():
         p = self.perspective
         return v.dot(p)
         
-    def forward(self, distance):
-        self.posWorld.moveRel(0,0, distance * self.speedMove)
+    def forward(self, deltaT):
+        self.posWorld.moveRel(0,0, deltaT * self.speedMove)
         
-    def upward(self, distance):
-        self.posWorld.move(0,distance * self.speedMove, 0)
+    def upward(self, deltaT):
+        self.posWorld.move(0,deltaT * self.speedMove, 0)
         
-    def sideward(self,distance):
-        self.posWorld.moveRel(distance * self.speedMove, 0, 0)
+    def sideward(self,deltaT):
+        self.posWorld.moveRel(deltaT * self.speedMove, 0, 0)
 
     def turnRight(self,degree):
         self.posWorld.rotateRel(0, degree * self.speedTurn, 0)
@@ -61,7 +61,7 @@ class Camera():
         
     def turnUp(self,degree):
 
-        self.posWorld.rotateRel(degree,0,0)
+        self.posWorld.rotateRel(degree* self.speedTurn,0,0)
         self.limitAngle()
         
     #no back/ behind spins

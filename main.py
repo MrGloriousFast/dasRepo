@@ -9,6 +9,7 @@ from camera import *
 from manager import *
 from instance import *
 
+
 def main():
 
     """
@@ -25,22 +26,24 @@ def main():
     """
 
     #x, y, fps
-    dis = Display(1600, 900, "evil engine #9")
+    dis = Display(1600, 900, "evil engine #9", 60)#10+50*random.random()
 
     cam = Camera((dis.w, dis.h))
 
     #create a group for cubes
     shader = AShader(os.path.join('shaders','default'))
-    tex = Texture(os.path.join('res','cube.png'))
+    tex = Texture(os.path.join('res','sky.png'))
     mesh = Mesh()
     c = Cube() # we use this as a blue print for all other cubes
     cubes = Instances(c.verticies, c.texcords, c.verticies, shader, tex)
 
     #create more cubes
-    for i in range(0, 10000):
+    for i in range(0, 5000):
         p = WorldModel()
+        p.rotate((random.random()-0.5)*500.,(random.random()-0.5)*500.,(random.random()-0.5)*500.)
         p.move((random.random()-0.5)*500.,(random.random()-0.5)*500.,(random.random()-0.5)*500.)
         p.resize(random.random()*random.random()*10.0)
+        p.update()
         cubes.append(p)
     cubes.createBuffer_pos()
     
@@ -68,9 +71,8 @@ def main():
 
 
         #for profiling we will end after a few seconds
-        if time.process_time() > 60000:
-            pygame.quit()
-            quit()
+        #pygame.quit()
+        #quit()
 
         #finisht the frame
         dis.flip()

@@ -52,19 +52,19 @@ class WorldModel():
 
         self.rot += rotChange 
         self.limitRot()
-        self.update()
+
 
     
     #in world coord
     def move(self, dx, dy, dz): 
         self.pos = [self.pos[0]+dx, self.pos[1]+dy, self.pos[2]+dz]
-        self.update()
+
         
     #relative to direction
     def rotateRel(self, dx, dy, dz):
         self.rot = [self.rot[0]+dx, self.rot[1]+dy, self.rot[2]+dz]
         self.limitRot()
-        self.update()
+
 
     #relative to direction
     def moveRel(self, dx, dy, dz):
@@ -78,16 +78,16 @@ class WorldModel():
         posChange = rotz.dot(roty).dot(rotx).dot( pyrr.Vector3([dx,dy,dz]) )
 
         self.pos += posChange
-        self.update()
+
         
     #always scale into all directions with the same scalar
     def resize(self, scalar):
         self.scale = numpy.array([self.scale[0]*scalar, self.scale[1]*scalar, self.scale[2]*scalar],dtype='float32')
-        self.update()
+
 
     def setSize(self, size):
         self.scale = numpy.array([size, size, size],dtype='float32')
-        self.update()
+
 
     def limitRot(self):
         self.rot = [

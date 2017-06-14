@@ -15,24 +15,16 @@ class Triangle:
         #the triangle as an array of vertices
         #pos(x,y,z)
         #texCord(x,y)
-        v = [ -0.5, -0.5 ,  0.0,
+        self.verticies = [ -0.5, -0.5 ,  0.0,
                0.5, -0.5 ,  0.0,
                0.0,  0.5 ,  0.0]
                
-        t =[  0.0,  0.0,
+        self.texcords =[  0.0,  0.0,
               1.0,  0.0,
                .5,  1.0]
         
-        i = [0,1,2]
-        #make the mesh
-        self.mesh = Mesh(v, t, i)
-        
-        #load our shader and use it
-        self.shader = AShader(os.path.join('shaders','default'))
-        
-        #use a texture
-        self.tex = Texture(os.path.join('res','awesomeface.png'))
-        
+        self.idicies = [0,1,2]
+
         #world position
         self.posWorld = WorldModel()
                     
@@ -40,12 +32,6 @@ class Triangle:
         
         #tell the graka about the changes
         self.shader.update(self.posWorld.get(), cam.view(), cam.projection())
-                     
-    def render(self):
-        #draw!!!!
-        self.shader.use()
-        self.tex.bind()
-        self.mesh.draw()
             
 class Quad:
     def __init__(self):
@@ -212,9 +198,6 @@ class Cube:
     def update(self, deltaT, counter):
         self.posWorld.rotateRel(0.001*counter,0.001*counter,0.001*counter)
         #self.posWorld.setSize(.01*(0.5+0.5*abs(math.sin(time.time()))))
-
-    def render(self):
-        self.mesh.render()
 
 
 
