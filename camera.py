@@ -2,7 +2,7 @@ from movement import *
 import pyrr, numpy
 
 class Camera():
-    def __init__(self, aspect = [16,9], fov = 70, posWorld = WorldModel(), zNear = 0.001, zFar = 1000):
+    def __init__(self, aspect = [16,9], fov = 70, posWorld = WorldModel(), zNear = 0.01, zFar = 1800):
 
         self.posWorld = posWorld
         #move back a little

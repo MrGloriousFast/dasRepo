@@ -179,8 +179,8 @@ class Cube:
         self.texcords = [
 
             #2
-            s,0,2*s,0,2*s,1,
-            2*s,1,  s,1, s,0,
+              s,0,  2*s,0,  2*s,1,
+            2*s,1,    s,1,    s,0,
 
             #5
             4*s,1,  5*s,1, 5*s,0,
@@ -211,7 +211,7 @@ class Cube:
                     
     def update(self, deltaT, counter):
         self.posWorld.rotateRel(0.001*counter,0.001*counter,0.001*counter)
-        self.posWorld.setSize(.01*(0.5+0.5*abs(math.sin(time.time()))))
+        #self.posWorld.setSize(.01*(0.5+0.5*abs(math.sin(time.time()))))
 
     def render(self):
         self.mesh.render()

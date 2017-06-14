@@ -26,18 +26,8 @@ class Display():
         screen = pygame.display.set_mode((self.w,self.h), DOUBLEBUF|OPENGL)
         
         glEnable(GL_DEPTH_TEST) #unfuck 3d surfaces, might make it slower
-        glClearColor(*clearColor)# that star just unpacks out tuple
-    
-    def getActualFps(self):
-
-        if (getTime() > 2+self.frameCountTimer):
-            #update timer
-            delta = getTime() - self.frameCountTimer
-            self.frameCountTimer = getTime()
-            #
-            print("fps: ", (self.frameCount - self.frameCountOld)/delta)
-            self.frameCountOld = self.frameCount
-   
+        glClearColor(*clearColor)# that star just unpacks a tuple
+       
     def clear(self):
         self.start = getTime()
 
@@ -55,14 +45,25 @@ class Display():
         self.end = getTime()
         self.deltaT = self.end - self.start
         waittime = int(1000./self.fps - self.deltaT)
-        if(waittime > 1):
+#        if(waittime > 1):
             
             #time.sleep(waittime/1000.)
-            time.sleep(0.001)
-        else:
+            #time.sleep(0.001)
+#        else:
             #always wait at least one millisec
-            time.sleep(0.001)
+            #time.sleep(0.001)
+        time.sleep(0.0001)
         self.getActualFps()
+
+    def getActualFps(self):
+
+        if (getTime() > 2+self.frameCountTimer):
+            #update timer
+            delta = getTime() - self.frameCountTimer
+            self.frameCountTimer = getTime()
+            #
+            print("fps: ", str((self.frameCount - self.frameCountOld)/delta)[0:3])
+            self.frameCountOld = self.frameCount
 
         
     def polygonMode(self, mode):

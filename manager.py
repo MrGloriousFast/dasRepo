@@ -49,14 +49,11 @@ class Group():
     def draw(self):
         self.shader.use()
         self.texture.bind()
+        self.mesh.bind()
 
         for b in self.bodies:
-            b.render()
             self.shader.updatePos(b.posWorld.get())
-        
-
-
-
+            b.mesh.render()
 
 
 

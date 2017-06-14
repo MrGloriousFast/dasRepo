@@ -49,7 +49,7 @@ class Mesh():
         self.create()
        
 
-    def render(self):
+    def bind(self):
 
         #vertix buffer object for position
         glBindBuffer(GL_ARRAY_BUFFER,self.bufferVertex)
@@ -58,6 +58,10 @@ class Mesh():
         #vertix buffer object for texture
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferTexture)
         glVertexAttribPointer(1, 2, GL_HALF_FLOAT, GL_FALSE, 0, ctypes.c_void_p(0))
+
+
+    def render(self):
+
         
         #glDrawElements(GL_TRIANGLES, self.indicies.shape[0], GL_UNSIGNED_BYTE, ctypes.c_void_p(0))
         #glDrawElements(GL_TRIANGLES, self.indicies.shape[0], GL_UNSIGNED_SHORT, ctypes.c_void_p(0))

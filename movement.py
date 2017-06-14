@@ -7,6 +7,7 @@ import obj, shader, movement
 from display import *
 import pyrr
 
+
 class WorldModel():
     def __init__(self, pos= [0,0,0], rot= [0,0,0], scale = [1.0,1.0,1.0]):
         

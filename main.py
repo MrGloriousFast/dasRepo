@@ -8,6 +8,8 @@ from display import *
 from camera import *
 from manager import *
 
+from threading import Thread
+
 def main():
 
     """
@@ -24,19 +26,19 @@ def main():
     """
 
     #x, y, fps
-    dis = Display(800, 600, "evil engine #9")
+    dis = Display(1600, 900, "evil engine #9")
 
     cam = Camera((dis.w, dis.h))
 
     #create a group for cubes
     shader = AShader(os.path.join('shaders','default'))
-    tex = Texture(os.path.join('res','sky.png'))
+    tex = Texture(os.path.join('res','cube.png'))
     mesh = Mesh()
     cubes = Group(shader, mesh, tex)
 
     #create the cubes
     temp = []
-    for i in range(0,200):
+    for i in range(0,500):
         c = Cube()
         c.posWorld.move((random.random()-0.5)*500.,(random.random()-0.5)*10.,(random.random()-0.5)*500.)
         c.posWorld.resize(random.random()*random.random()*10.0)
@@ -46,9 +48,13 @@ def main():
     cubes.insert(c)
 
     #create a skybox
-    skybox = Cube()
-    skybox.posWorld.resize(1000)
-    cubes.insert(skybox)
+    shader = AShader(os.path.join('shaders','default'))
+    tex = Texture(os.path.join('res','sky.png'))
+    mesh = Mesh()
+    skybox = Group(shader, mesh, tex)
+    s = Cube()
+    s.posWorld.resize(1000)
+    skybox.insert(s)
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
@@ -66,11 +72,14 @@ def main():
         userInput(cam, dis)
         
         cubes.updateShader(cam)
-        #cubes.updateBodies(dis.deltaT)        
+        #cubes.updateBodies(dis.deltaT)# very expensive for cpu!!    
         cubes.draw()
         
         plane.update(dis.deltaT, cam)
         plane.render()
+        
+        skybox.updateShader(cam)
+        skybox.draw()
 
         #for profiling we will end after a few seconds
         if time.process_time() > 60000:
