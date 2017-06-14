@@ -44,7 +44,7 @@ class Display():
         pygame.display.flip()
         self.end_wait = getTime()
         deltaT_wait = self.end_wait - self.start
-        waittime = (1000./self.fps - self.deltaT)-1.5
+        waittime = (1000./self.fps - self.deltaT)-1.3 #offset because we loos time somehow
         if(waittime > 1):
             
             time.sleep(waittime/1000.)
