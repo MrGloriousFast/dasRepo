@@ -36,18 +36,21 @@ def main():
     cubes = Instances(c.verticies, c.texcords, c.verticies, shader, tex)
 
     #create more cubes
-    for i in range(0, 5000):
-        p = WorldModel()
-        p.rotate((random.random()-0.5)*500.,(random.random()-0.5)*500.,(random.random()-0.5)*500.)
-        p.move((random.random()-0.5)*500.,(random.random()-0.5)*500.,(random.random()-0.5)*500.)
-        p.resize(random.random()*random.random()*10.0)
-        p.update()
+    number_cubes = 50000
+    for i in range(0, number_cubes):
+        pos   = [(random.random()-0.5)*1000.,(random.random()-0.5)*1000.,(random.random()-0.5)*1000.]
+        rot   = [(random.random()-0.5)*500.,(random.random()-0.5)*500.,(random.random()-0.5)*500.]
+        s     = 0.1+(random.random()**10)*10.0
+        scale = [s,s,s]    
+        p = WorldModel(pos,rot,scale)
         cubes.append(p)
+        if( i%int(number_cubes/10) ==0 ):
+            print("loading...", int(100*i/number_cubes), "%" , i)
     cubes.createBuffer_pos()
     
     #capture mouse
     pygame.mouse.set_pos(dis.w/2., dis.w/2)
-    pygame.event.get(pygame.MOUSEMOTION)
+    pygame.event.get(pygame.MOUSEMOTION) # flush the last movement from the mouse events
     pygame.mouse.set_visible(False)
     
     #create a plane
@@ -68,9 +71,9 @@ def main():
         #plane.render()
 
 
-        #for profiling we will end after a few seconds
-        #pygame.quit()
-        #quit()
+        #for profiling we will end after init time
+        pygame.quit()
+        quit()
 
         #finisht the frame
         dis.flip()
@@ -96,8 +99,10 @@ def userInput(camera, display):
             event.pos = (display.w/2,display.h/2)
 
             #look around
-            camera.turnRight( -x*deltaT)
-            camera.turnUp(    -y*deltaT)
+            if( abs(x)>1 ):
+                camera.turnRight( -x*deltaT)
+            if( abs(y)>1 ):
+                camera.turnUp(    -y*deltaT)
 
             #capture mouse
             pygame.mouse.set_pos(display.w/2., display.w/2)

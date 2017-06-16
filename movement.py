@@ -34,12 +34,16 @@ class WorldModel():
         #matRot = rotx * roty * rotz
         matRot = rotx.dot(roty).dot(rotz)
         
+        #for some reason the following two alternatives are even slower!
+#        matRot = pyrr.matrix44.create_from_axis_rotation(self.rot, 1) 
+#        matRot = pyrr.matrix44.create_from_eulers(self.rot) 
+
+        
        #scale
         scale = pyrr.matrix44.create_from_scale(self.scale)       
         
        #matWorld = pos * matRot * scale
         self.matWorld = scale.dot(matRot).dot(pos)
-        #matWorld = pos.dot(matRot).dot(scale) #definatly wrong!
 
     #in world coord        
     def rotate(self, dx, dy, dz):
