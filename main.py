@@ -72,8 +72,8 @@ def main():
 
 
         #for profiling we will end after init time
-        pygame.quit()
-        quit()
+        #pygame.quit()
+        #quit()
 
         #finisht the frame
         dis.flip()
